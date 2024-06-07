@@ -41,6 +41,7 @@ try
     await context.MigrateDatabaseAsync();
     await context.SeedRole();
     await context.SeedAccount();
+    await context.SeedBadmintonCourt();
 }
 catch (Exception ex)
 {

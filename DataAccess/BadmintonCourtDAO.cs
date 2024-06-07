@@ -33,5 +33,6 @@ public class BadmintonCourtDAO
     public async Task AddBadmintonCourt(BadmintonCourt badmintonCourt)
     {
         await _context.BadmintonCourts.AddAsync(badmintonCourt);
+        await _context.SaveChangesAsync();
     }
 }

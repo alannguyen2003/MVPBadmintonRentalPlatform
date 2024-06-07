@@ -14,6 +14,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IBadmintonCourtRepository, BadmintonCourtRepository>();
         return services;
     }
 
@@ -21,6 +22,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IBadmintonCourtService, BadmintonCourtService>();
         return services;
     }
 
