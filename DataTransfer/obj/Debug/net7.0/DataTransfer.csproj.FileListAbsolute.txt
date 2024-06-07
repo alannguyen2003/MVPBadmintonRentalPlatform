@@ -1,0 +1,12 @@
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\bin\Debug\net7.0\DataTransfer.deps.json
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\bin\Debug\net7.0\DataTransfer.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\bin\Debug\net7.0\DataTransfer.pdb
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\DataTransfer.csproj.AssemblyReference.cache
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\DataTransfer.GeneratedMSBuildEditorConfig.editorconfig
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\DataTransfer.AssemblyInfoInputs.cache
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\DataTransfer.AssemblyInfo.cs
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\DataTransfer.csproj.CoreCompileInputs.cache
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\DataTransfer.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\refint\DataTransfer.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\DataTransfer.pdb
+E:\Semester 8\EXE201\BadmintonRentalPlatform\DataTransfer\obj\Debug\net7.0\ref\DataTransfer.dll

@@ -1,0 +1,17 @@
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\bin\Debug\net7.0\Repository.deps.json
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\bin\Debug\net7.0\Repository.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\bin\Debug\net7.0\Repository.pdb
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\bin\Debug\net7.0\BusinessObject.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\bin\Debug\net7.0\DataAccess.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\bin\Debug\net7.0\DataAccess.pdb
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\bin\Debug\net7.0\BusinessObject.pdb
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\Repository.csproj.AssemblyReference.cache
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\Repository.GeneratedMSBuildEditorConfig.editorconfig
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\Repository.AssemblyInfoInputs.cache
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\Repository.AssemblyInfo.cs
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\Repository.csproj.CoreCompileInputs.cache
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\Repository.csproj.CopyComplete
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\Repository.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\refint\Repository.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\Repository.pdb
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Repository\obj\Debug\net7.0\ref\Repository.dll
