@@ -42,6 +42,7 @@ try
     await context.SeedRole();
     await context.SeedAccount();
     await context.SeedBadmintonCourt();
+    await context.SeedBadmintonCourtService();
 }
 catch (Exception ex)
 {

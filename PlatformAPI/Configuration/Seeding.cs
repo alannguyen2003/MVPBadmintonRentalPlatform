@@ -10,20 +10,103 @@ public class Seeding
     private readonly IAccountService _accountService;
     private readonly IRoleService _roleService;
     private readonly IBadmintonCourtService _badmintonCourtService;
+    private readonly IServiceCourtService _serviceCourtService;
     private readonly AppDbContext _context;
 
     public Seeding(IAccountService accountService, IRoleService roleService,
-        IBadmintonCourtService badmintonCourtService)
+        IBadmintonCourtService badmintonCourtService, IServiceCourtService serviceCourtService)
     {
         _accountService = accountService;
         _context = new AppDbContext();
         _roleService = roleService;
         _badmintonCourtService = badmintonCourtService;
+        _serviceCourtService = serviceCourtService;
     }
 
     public async Task MigrateDatabaseAsync()
     {
         await _context.Database.MigrateAsync();
+    }
+
+    public async Task SeedBadmintonCourtService()
+    {
+        if (await _context.ServiceCourts.AnyAsync())
+        {
+            return;
+        }
+
+        var serviceCourts = new List<ServiceCourt>()
+        {
+            new ServiceCourt()
+            {
+                ServiceName = "Wifi",
+                BadmintonCourtId = 1
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Tổ chức giải đấu",
+                BadmintonCourtId = 1
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Giữ xe miễn phí",
+                BadmintonCourtId = 1
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Canteen",
+                BadmintonCourtId = 1
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Wifi",
+                BadmintonCourtId = 2
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Tổ chức giải đấu",
+                BadmintonCourtId = 2
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Giữ xe miễn phí",
+                BadmintonCourtId = 2
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Canteen",
+                BadmintonCourtId = 2
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Wifi",
+                BadmintonCourtId = 3
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Tổ chức giải đấu",
+                BadmintonCourtId = 3
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Giữ xe miễn phí",
+                BadmintonCourtId = 3
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Canteen",
+                BadmintonCourtId = 3
+            },
+            new ServiceCourt()
+            {
+                ServiceName = "Cafe",
+                BadmintonCourtId = 3
+            }
+        };
+        foreach (var item in serviceCourts)
+        {
+            await _serviceCourtService.AddServiceCourt(item);
+        }
     }
 
     public async Task SeedBadmintonCourt()
