@@ -32,7 +32,8 @@ public class AccountService : IAccountService
             new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.Day.ToString()),
-            new Claim("UserName", account.FullName)
+            new Claim("UserName", account.FullName),
+            new Claim("UserId", account.Id.ToString())
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
         var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -40,7 +41,7 @@ public class AccountService : IAccountService
             _configuration["Jwt:Issuer"],
             _configuration["Jwt:Audience"],
             claims,
-            expires: DateTime.UtcNow.AddMinutes(30),
+            expires: DateTime.UtcNow.AddYears(4),
             signingCredentials: signIn
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -49,6 +50,11 @@ public class AccountService : IAccountService
     public async Task AddNewAccount(Account account)
     {
         await _accountRepository.AddNewAccount(account);
+    }
+
+    public async Task<Account?> AddNewAccountAsync(Account account)
+    {
+        return await _accountRepository.AddNewAccountAsync(account);
     }
 
     public async Task<List<Account>> GetAllAccounts()

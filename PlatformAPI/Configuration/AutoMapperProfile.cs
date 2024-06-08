@@ -11,6 +11,7 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         AuthenticationEntityMap();
+        BadmintonCourtEntityMap();
     }
 
     private void AuthenticationEntityMap()
@@ -20,6 +21,16 @@ public class AutoMapperProfile : Profile
         CreateMap<LoginRequest, Account>()
             .ReverseMap();
         CreateMap<PlayerRegisterRequest, Account>()
+            .ReverseMap();
+        CreateMap<OwnerRegisterRequest, Account>()
+            .ReverseMap();
+    }
+
+    private void BadmintonCourtEntityMap()
+    {
+        CreateMap<OwnerRegisterRequest, BadmintonCourt>()
+            .ReverseMap();
+        CreateMap<ServiceCourt, ServiceOfCourtResponse>()
             .ReverseMap();
     }
     

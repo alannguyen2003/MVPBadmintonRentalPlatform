@@ -38,6 +38,13 @@ public class AccountDAO
         await _context.SaveChangesAsync();
     }
 
+    public async Task<Account?> AddNewAccountAsync(Account account)
+    {
+        await _context.Accounts.AddAsync(account);
+        await _context.SaveChangesAsync();
+        return account;
+    }
+
     public async Task<List<Account>> GetAllAccount()
     {
         return await _context.Accounts.ToListAsync();

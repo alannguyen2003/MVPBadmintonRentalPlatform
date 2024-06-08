@@ -13,12 +13,15 @@ namespace PlatformAPI.Controllers;
 public class AuthenticationController : ControllerBase
 {
     private readonly IAccountService _accountService;
+    private readonly IBadmintonCourtService _badmintonCourtService;
     private readonly IMapper _mapper;
 
-    public AuthenticationController(IAccountService accountService, IMapper mapper)
+    public AuthenticationController(IAccountService accountService, IMapper mapper,
+        IBadmintonCourtService badmintonCourtService)
     {
         _accountService = accountService;
         _mapper = mapper;
+        _badmintonCourtService = badmintonCourtService;
     }
 
     [HttpGet("get-accounts")]
@@ -76,17 +79,26 @@ public class AuthenticationController : ControllerBase
             account.Bank = "";
             account.RoleId = 1;
             account.CardNumber = "";
-            await _accountService.AddNewAccount(account);
+            var accountRegister = await _accountService.AddNewAccountAsync(account);
             return Ok(new ApiResponse()
             {
                 StatusCode = 201,
                 Message = "Register successful!",
-                Data = null
+                Data = await _accountService.GenerateJwtToken(accountRegister)
             });
         }
         catch (Exception ex)
         {
             return BadRequest("Error in register: " + ex.Message);
         }
+    }
+
+    [HttpPost("owner-register")]
+    public async Task<IActionResult> OwnerRegister(OwnerRegisterRequest request)
+    {
+        var account = _mapper.Map<Account>(request);
+        
+        var badmintonCourt = _mapper.Map<BadmintonCourt>(request);
+        return Ok(account);
     }
 }

@@ -27,7 +27,9 @@ public class ServiceCourtDAO
 
     public async Task<List<ServiceCourt>> GetAllServices()
     {
-        return await _context.ServiceCourts.ToListAsync();
+        return await _context.ServiceCourts
+            .Include(badmintonCourt => badmintonCourt.BadmintonCourt)
+            .ToListAsync();
     }
 
     public async Task<List<ServiceCourt>> GetAllServicesBasedOnBadmintonCourt(int badmintonCourtId)

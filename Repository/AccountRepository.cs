@@ -16,6 +16,11 @@ public class AccountRepository : IAccountRepository
         await AccountDAO.Instance.AddNewAccount(account);
     }
 
+    public async Task<Account?> AddNewAccountAsync(Account account)
+    {
+        return await AccountDAO.Instance.AddNewAccountAsync(account);
+    }
+
     public async Task<List<Account>> GetAllAccounts()
     {
         return await AccountDAO.Instance.GetAllAccount();
