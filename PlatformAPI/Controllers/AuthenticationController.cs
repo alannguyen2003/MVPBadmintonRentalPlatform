@@ -96,9 +96,8 @@ public class AuthenticationController : ControllerBase
     [HttpPost("owner-register")]
     public async Task<IActionResult> OwnerRegister(OwnerRegisterRequest request)
     {
-        var account = _mapper.Map<Account>(request);
+        await _accountService.AddNewAccount(_mapper.Map<Account>(request));
         
-        var badmintonCourt = _mapper.Map<BadmintonCourt>(request);
-        return Ok(account);
+        return Ok();
     }
 }

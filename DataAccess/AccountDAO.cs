@@ -34,14 +34,23 @@ public class AccountDAO
 
     public async Task AddNewAccount(Account account)
     {
-        await _context.Accounts.AddAsync(account);
-        await _context.SaveChangesAsync();
+        var accountContext = await _context.Accounts.FirstOrDefaultAsync(account => account.Email.Equals(account.Email));
+        if (accountContext == null)
+        {
+            await _context.Accounts.AddAsync(account);
+            await _context.SaveChangesAsync();
+        }
     }
 
     public async Task<Account?> AddNewAccountAsync(Account account)
     {
-        await _context.Accounts.AddAsync(account);
-        await _context.SaveChangesAsync();
+        var accountContext = await _context.Accounts
+            .FirstOrDefaultAsync(acc => acc.Email.Equals(account.Email));
+        if (accountContext == null)
+        {
+            await _context.Accounts.AddAsync(account);
+            await _context.SaveChangesAsync();
+        }
         return account;
     }
 

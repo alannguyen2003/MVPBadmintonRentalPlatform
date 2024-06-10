@@ -28,9 +28,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
-
+app.UseCors(builder =>
+    builder.AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials()
+        .AllowAnyOrigin());
 app.MapControllers();
 
 using var scope = app.Services.CreateScope();
