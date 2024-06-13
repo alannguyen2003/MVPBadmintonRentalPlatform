@@ -32,6 +32,8 @@ public class AutoMapperProfile : Profile
             .ReverseMap();
         CreateMap<ServiceCourt, ServiceOfCourtResponse>()
             .ReverseMap();
+        CreateMap<BadmintonCourtRequest, BadmintonCourt>()
+            .ReverseMap();
     }
     
 }

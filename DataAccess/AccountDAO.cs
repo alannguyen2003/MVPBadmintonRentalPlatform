@@ -62,4 +62,9 @@ public class AccountDAO
     {
         return await _context.Accounts.ToListAsync();
     }
+
+    public async Task<Account?> GetAccount(int userId)
+    {
+        return await _context.Accounts.FindAsync(userId);
+    }
 }

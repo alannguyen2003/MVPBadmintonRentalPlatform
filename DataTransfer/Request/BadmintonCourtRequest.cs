@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace DataTransfer.Request;
 
-namespace BusinessObject;
-
-[Table("BadmintonCourts")]
-public class BadmintonCourt : BaseEntity
+public class BadmintonCourtRequest
 {
-    public string ProfileImage { get; set; }
     public string CourtName { get; set; }
     public int NumberOfCourt { get; set; }
     public int HourStart { get; set; }
@@ -15,8 +11,5 @@ public class BadmintonCourt : BaseEntity
     public float PricePerHour { get; set; }
     public float PriceAtWeekend { get; set; }
     public string Address { get; set; }
-    public int AccountId { get; set; }
-    public virtual Account Account { get; set; }
     
-    public ICollection<ServiceCourt> Services { get; set; }
-}
+}   

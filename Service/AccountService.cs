@@ -25,6 +25,11 @@ public class AccountService : IAccountService
         return await _accountRepository.GetAccount(email, password);
     }
 
+    public async Task<Account?> GetAccount(int userId)
+    {
+        return await _accountRepository.GetAccount(userId);
+    }
+
     public async Task<string> GenerateJwtToken(Account account)
     {
         var claims = new[]

@@ -27,7 +27,8 @@ public class BadmintonCourtDAO
 
     public async Task<List<BadmintonCourt>> GetAllBadmintonCourts()
     {
-        return await _context.BadmintonCourts.ToListAsync();
+        return await _context.BadmintonCourts
+            .ToListAsync();
     }
 
     public async Task AddBadmintonCourt(BadmintonCourt badmintonCourt)

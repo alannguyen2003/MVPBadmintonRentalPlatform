@@ -1,4 +1,8 @@
-﻿using DataTransfer;
+﻿using System.Security.Claims;
+using AutoMapper;
+using BusinessObject;
+using DataTransfer;
+using DataTransfer.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
@@ -11,10 +15,12 @@ namespace PlatformAPI.Controllers;
 public class BadmintonCourtController : ControllerBase
 {
     private readonly IBadmintonCourtService _badmintonCourtService;
+    private readonly IMapper _mapper;
 
-    public BadmintonCourtController(IBadmintonCourtService badmintonCourtService)
+    public BadmintonCourtController(IBadmintonCourtService badmintonCourtService, IMapper mapper)
     {
         _badmintonCourtService = badmintonCourtService;
+        _mapper = mapper;
     }
 
     [HttpGet("get-all-badmintonton-courts")]
@@ -38,4 +44,29 @@ public class BadmintonCourtController : ControllerBase
             Data = null
         });
     }
+
+    [HttpPost("add-badminton-court")]
+    public async Task<IActionResult> AddNewBadmintonCourt(BadmintonCourtRequest request)
+    {
+        try
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userId = identity.FindFirst("UserId").Value;
+            var badmintonCourt = _mapper.Map<BadmintonCourt>(request);
+            badmintonCourt.AccountId = Int32.Parse(userId);
+            badmintonCourt.ProfileImage = "";
+            await _badmintonCourtService.AddBadmintonCourt(badmintonCourt);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 201, 
+            Message = "Add new badminton court successful!"
+        });
+    }
+    
+    
 }
