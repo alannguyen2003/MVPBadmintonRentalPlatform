@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataTransfer;
 using DataTransfer.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
 
@@ -8,6 +9,7 @@ namespace PlatformAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ServiceCourtController : ControllerBase
 {
     private readonly IServiceCourtService _serviceCourtService;

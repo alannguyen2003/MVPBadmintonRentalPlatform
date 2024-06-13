@@ -57,6 +57,11 @@ public class AccountService : IAccountService
         return await _accountRepository.AddNewAccountAsync(account);
     }
 
+    public async Task<Account?> RegisterOwner(Account account, BadmintonCourt badmintonCourt)
+    {
+        return await _accountRepository.RegisterNewOwner(account, badmintonCourt);
+    }
+
     public async Task<List<Account>> GetAllAccounts()
     {
         return await _accountRepository.GetAllAccounts();

@@ -51,6 +51,10 @@ public class AccountDAO
             await _context.Accounts.AddAsync(account);
             await _context.SaveChangesAsync();
         }
+        else
+        {
+            return null;
+        }
         return account;
     }
 

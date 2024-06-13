@@ -96,8 +96,25 @@ public class AuthenticationController : ControllerBase
     [HttpPost("owner-register")]
     public async Task<IActionResult> OwnerRegister(OwnerRegisterRequest request)
     {
-        await _accountService.AddNewAccount(_mapper.Map<Account>(request));
-        
-        return Ok();
+        try
+        {
+            var account = _mapper.Map<Account>(request);
+            var badmintonCourt = _mapper.Map<BadmintonCourt>(request);
+            account.Bank = "";
+            account.RoleId = 2;
+            account.CardNumber = "";
+            badmintonCourt.ProfileImage = "";
+            var accountRegister = await _accountService.RegisterOwner(account, badmintonCourt);
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 201,
+                Message = "Register successful!",
+                Data = await _accountService.GenerateJwtToken(accountRegister)
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest("Error in register: " + ex);
+        }
     }
 }

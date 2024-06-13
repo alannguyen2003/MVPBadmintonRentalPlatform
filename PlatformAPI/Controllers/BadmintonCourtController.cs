@@ -1,4 +1,5 @@
 ﻿using DataTransfer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
 
@@ -6,6 +7,7 @@ namespace PlatformAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class BadmintonCourtController : ControllerBase
 {
     private readonly IBadmintonCourtService _badmintonCourtService;

@@ -1,7 +1,4 @@
-using System.Text;
 using DataAccess;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using PlatformAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +11,7 @@ builder.Services.AddRepository();
 builder.Services.AddService();
 builder.Services.AddAutoMapper();
 builder.Services.AddSeeding();
+builder.Services.AddSwaggerAuthorization();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,11 +27,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-app.UseCors(builder =>
-    builder.AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials()
-        .AllowAnyOrigin());
+
+app.UseCors(options =>
+    options.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .WithOrigins("http://localhost:3000", "http://localhost:8081"));
+
 app.MapControllers();
 
 using var scope = app.Services.CreateScope();

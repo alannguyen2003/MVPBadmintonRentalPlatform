@@ -8,5 +8,6 @@ public interface IAccountService
     public Task<string> GenerateJwtToken(Account account);
     public Task AddNewAccount(Account account);
     public Task<Account?> AddNewAccountAsync(Account account);
+    public Task<Account?> RegisterOwner(Account account, BadmintonCourt badmintonCourt);
     public Task<List<Account>> GetAllAccounts();
 }
