@@ -35,4 +35,10 @@ public class RoleDAO
         await _context.Roles.AddAsync(role);
         await _context.SaveChangesAsync();
     }
+
+    public async Task AddRangeRoleAsync(List<Role> roles)
+    {
+        await _context.Roles.AddRangeAsync(roles);
+        await _context.SaveChangesAsync();
+    }
 }

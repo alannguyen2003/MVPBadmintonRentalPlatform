@@ -74,4 +74,10 @@ public class ServiceCourtController : ControllerBase
             Data = null
         });
     }
+
+    [HttpPost("add-service-court")]
+    public async Task<IActionResult> AddServiceForBadmintonCourt(int badmintonCourtId)
+    {
+        return Ok();
+    }
 }

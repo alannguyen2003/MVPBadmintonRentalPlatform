@@ -11,6 +11,7 @@ namespace PlatformAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IAccountService _accountService;
@@ -22,13 +23,26 @@ public class UserController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("get-detail-user")]
+    [HttpGet("get-profile")]
     [Authorize]
-    public async Task<IActionResult> GetDetailUser()
+    public async Task<IActionResult> GetProfile()
     {
         var identity = HttpContext.User.Identity as ClaimsIdentity;
         var userId = identity.FindFirst("UserId").Value;
         var account = await _accountService.GetAccount(Int32.Parse(userId));
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200, Message = "Get account successful!",
+            Data = _mapper.Map<AccountResponse>(account)
+        });
+    }
+    
+    [HttpGet("get-detail-user")]
+    [Authorize]
+    public async Task<IActionResult> GetDetailUser(int userId)
+    {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        var account = await _accountService.GetAccount(userId);
         return Ok(new ApiResponse()
         {
             StatusCode = 200, Message = "Get account successful!",

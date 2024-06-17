@@ -15,4 +15,9 @@ public class RoleRepository : IRoleRepository
     {
         await RoleDAO.Instance.AddRole(role);
     }
+
+    public async Task AddRangeRoleAsync(List<Role> roles)
+    {
+        await RoleDAO.Instance.AddRangeRoleAsync(roles);
+    }
 }

@@ -11,16 +11,19 @@ public class Seeding
     private readonly IRoleService _roleService;
     private readonly IBadmintonCourtService _badmintonCourtService;
     private readonly IServiceCourtService _serviceCourtService;
+    private readonly ICourtService _courtService;
     private readonly AppDbContext _context;
 
     public Seeding(IAccountService accountService, IRoleService roleService,
-        IBadmintonCourtService badmintonCourtService, IServiceCourtService serviceCourtService)
+        IBadmintonCourtService badmintonCourtService, IServiceCourtService serviceCourtService,
+        ICourtService courtService)
     {
         _accountService = accountService;
         _context = new AppDbContext();
         _roleService = roleService;
         _badmintonCourtService = badmintonCourtService;
         _serviceCourtService = serviceCourtService;
+        _courtService = courtService;
     }
 
     public async Task MigrateDatabaseAsync()
@@ -103,9 +106,48 @@ public class Seeding
                 BadmintonCourtId = 3
             }
         };
-        foreach (var item in serviceCourts)
+        await _serviceCourtService.AddRangeServiceCourt(serviceCourts);
+    }
+
+    public async Task SeedCourts()
+    {
+        if (await _context.Courts.AnyAsync())
         {
-            await _serviceCourtService.AddServiceCourt(item);
+            return;
+        }
+
+        var badmintonCourts = await _context.BadmintonCourts.ToListAsync();
+        foreach (var badmintonCourt in badmintonCourts)
+        {
+            var courts = new List<Court>();
+            for (int i = 1; i <= badmintonCourt.NumberOfCourt; i++)
+            {
+                courts.Add(new Court()
+                {
+                    CourtCode = i.ToString(),
+                    BadmintonCourtId = badmintonCourt.Id
+                });
+            }
+            await _courtService.AddRangeCourts(courts);
+        }
+    }
+
+    public async Task SeedSlotForBadmintonCourts()
+    {
+        if (await _context.Slots.AnyAsync())
+        {
+            return;
+        }
+
+        var courts = await _context.Courts
+            .Include(badmintonCourt => badmintonCourt.BadmintonCourt)
+            .ToListAsync();
+        foreach (var court in courts)
+        {
+            var hourStart = court.BadmintonCourt.HourStart;
+            var minuteStart = court.BadmintonCourt.MinuteStart;
+            var hourEnd = court.BadmintonCourt.HourEnd;
+            var minuteEnd = court.BadmintonCourt.MinuteEnd;
         }
     }
 
@@ -129,6 +171,7 @@ public class Seeding
                 Address = "992 Đ. Nguyễn Duy Trinh, Phường Phú Hữu, Thủ Đức, Thành phố Hồ Chí Minh",
                 PriceAtWeekend = 110000,
                 PricePerHour = 100000,
+                PriceAtHoliday = 90000,
                 ProfileImage = "",
                 AccountId = 1,
                 NumberOfCourt = 9
@@ -143,6 +186,7 @@ public class Seeding
                 Address = "39p đường gò cát phường Phú hữu Quận 9 TPTĐ, Thành phố Hồ Chí Minh",
                 PriceAtWeekend = 100000,
                 PricePerHour = 80000,
+                PriceAtHoliday = 90000,
                 ProfileImage = "",
                 AccountId = 2,
                 NumberOfCourt = 9
@@ -158,6 +202,7 @@ public class Seeding
                 Address = "15 Đ. số 28, Cát Lái, Quận 2, Thành phố Hồ Chí Minh",
                 PriceAtWeekend = 120000,
                 PricePerHour = 110000,
+                PriceAtHoliday = 90000,
                 ProfileImage = "", 
                 AccountId = 3,
                 NumberOfCourt = 9
@@ -173,6 +218,7 @@ public class Seeding
                 Address = "408/8 Nguyễn Xiển, Long Thạnh Mỹ, Quận 9, Thành phố Hồ Chí Minh",
                 PriceAtWeekend = 80000,
                 PricePerHour = 70000,
+                PriceAtHoliday = 90000,
                 ProfileImage = "",
                 AccountId = 4,
                 NumberOfCourt = 9
@@ -188,15 +234,13 @@ public class Seeding
                 Address = "545 Nguyễn Xiển, Long Thạnh Mỹ, Quận 9, Thành phố Hồ Chí Minh",
                 PriceAtWeekend = 100000,
                 PricePerHour = 90000,
+                PriceAtHoliday = 90000,
                 ProfileImage = "",
                 AccountId = 5,
                 NumberOfCourt = 9
             }
         };
-        foreach (var item in badmintonCourts)
-        {
-            await _badmintonCourtService.AddBadmintonCourt(item);
-        }
+        await _badmintonCourtService.AddRangeBadmintonCourt(badmintonCourts);
     }
 
     public async Task SeedRole()
@@ -221,10 +265,7 @@ public class Seeding
                 RoleName = "Admin"
             }
         };
-        foreach (var item in roles)
-        {
-            await _roleService.AddRole(item);
-        }
+        await _roleService.AddRangeRoleAsync(roles);
     }
 
     public async Task SeedAccount()
@@ -313,9 +354,6 @@ public class Seeding
                 RoleId = 2
             }
         };
-        foreach (var item in accounts)
-        {
-            await _accountService.AddNewAccount(item);
-        }
+        await _accountService.AddRangeAccountAsync(accounts);
     }
 }

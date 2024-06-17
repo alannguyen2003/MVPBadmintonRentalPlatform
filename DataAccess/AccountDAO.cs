@@ -67,4 +67,17 @@ public class AccountDAO
     {
         return await _context.Accounts.FindAsync(userId);
     }
+
+    public async Task<List<Account>> GetAccountWithRole(int roleId)
+    {
+        return await _context.Accounts
+            .Where(account => account.RoleId == roleId)
+            .ToListAsync();
+    }
+
+    public async Task AddRangeAccountAsync(List<Account> accounts)
+    {
+        await _context.Accounts.AddRangeAsync(accounts);
+        await _context.SaveChangesAsync();
+    }
 }

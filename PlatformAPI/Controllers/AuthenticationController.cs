@@ -45,6 +45,28 @@ public class AuthenticationController : ControllerBase
             Data = null
         });
     }
+    
+    [HttpGet("get-accounts-with-role")]
+    public async Task<IActionResult> GetAllAccountsWithRole(int roleId)
+    {
+        var accounts = await _accountService.GetAccountWithRole(roleId);
+        if (accounts.Any())
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Successful!",
+                Data = _mapper.Map<List<AccountResponse>>(accounts)
+            });
+        }
+
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 400,
+            Message = "Not found any record!",
+            Data = null
+        });
+    }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
@@ -76,9 +98,7 @@ public class AuthenticationController : ControllerBase
         try
         {
             var account = _mapper.Map<Account>(request);
-            account.Bank = "";
             account.RoleId = 1;
-            account.CardNumber = "";
             var accountRegister = await _accountService.AddNewAccountAsync(account);
             return Ok(new ApiResponse()
             {
@@ -100,9 +120,7 @@ public class AuthenticationController : ControllerBase
         {
             var account = _mapper.Map<Account>(request);
             var badmintonCourt = _mapper.Map<BadmintonCourt>(request);
-            account.Bank = "";
             account.RoleId = 2;
-            account.CardNumber = "";
             badmintonCourt.ProfileImage = "";
             var accountRegister = await _accountService.RegisterOwner(account, badmintonCourt);
             return Ok(new ApiResponse()

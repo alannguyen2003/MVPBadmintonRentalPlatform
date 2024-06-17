@@ -9,6 +9,7 @@ builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddControllers();
 builder.Services.AddRepository();
 builder.Services.AddService();
+builder.Services.AddCloudinarySetting(builder.Configuration);
 builder.Services.AddAutoMapper();
 builder.Services.AddSeeding();
 builder.Services.AddSwaggerAuthorization();
@@ -46,6 +47,7 @@ try
     await context.SeedAccount();
     await context.SeedBadmintonCourt();
     await context.SeedBadmintonCourtService();
+    await context.SeedCourts();
 }
 catch (Exception ex)
 {

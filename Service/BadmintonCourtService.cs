@@ -21,4 +21,9 @@ public class BadmintonCourtService : IBadmintonCourtService
     {
         await _badmintonCourtRepository.AddBadmintonCourt(badmintonCourt);
     }
+
+    public async Task AddRangeBadmintonCourt(List<BadmintonCourt> badmintonCourts)
+    {
+        await _badmintonCourtRepository.AddRangeBadmintonCourtAsync(badmintonCourts);
+    }
 }

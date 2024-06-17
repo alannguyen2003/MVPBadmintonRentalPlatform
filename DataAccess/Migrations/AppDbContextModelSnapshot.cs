@@ -101,6 +101,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("NumberOfCourt")
                         .HasColumnType("int");
 
+                    b.Property<float>("PriceAtHoliday")
+                        .HasColumnType("real");
+
                     b.Property<float>("PriceAtWeekend")
                         .HasColumnType("real");
 
@@ -245,7 +248,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("BusinessObject.ServiceCourt", b =>
                 {
                     b.HasOne("BusinessObject.BadmintonCourt", "BadmintonCourt")
-                        .WithMany()
+                        .WithMany("Services")
                         .HasForeignKey("BadmintonCourtId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -262,6 +265,11 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Court");
+                });
+
+            modelBuilder.Entity("BusinessObject.BadmintonCourt", b =>
+                {
+                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

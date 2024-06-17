@@ -23,4 +23,9 @@ public class RoleService : IRoleService
     {
         await _roleRepository.AddRole(role);
     }
+
+    public async Task AddRangeRoleAsync(List<Role> roles)
+    {
+        await _roleRepository.AddRangeRoleAsync(roles);
+    }
 }

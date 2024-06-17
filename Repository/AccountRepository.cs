@@ -26,6 +26,11 @@ public class AccountRepository : IAccountRepository
         return await AccountDAO.Instance.AddNewAccountAsync(account);
     }
 
+    public async Task AddRangeAccountAsync(List<Account> accounts)
+    {
+        await AccountDAO.Instance.AddRangeAccountAsync(accounts);
+    }
+
     public async Task<Account?> RegisterNewOwner(Account account, BadmintonCourt badmintonCourt)
     {
         var accountOwner = await AuthenticationDAO.Instance.OwnerRegister(account, badmintonCourt);
@@ -35,5 +40,10 @@ public class AccountRepository : IAccountRepository
     public async Task<List<Account>> GetAllAccounts()
     {
         return await AccountDAO.Instance.GetAllAccount();
+    }
+
+    public async Task<List<Account>> GetAccontWithRole(int roleId)
+    {
+        return await AccountDAO.Instance.GetAccountWithRole(roleId);
     }
 }

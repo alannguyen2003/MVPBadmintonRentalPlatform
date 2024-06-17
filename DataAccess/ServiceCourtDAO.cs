@@ -44,4 +44,10 @@ public class ServiceCourtDAO
         await _context.ServiceCourts.AddAsync(serviceCourt);
         await _context.SaveChangesAsync();
     }
+
+    public async Task AddRangeServiceCourt(List<ServiceCourt> listService)
+    {
+        await _context.ServiceCourts.AddRangeAsync(listService);
+        await _context.SaveChangesAsync();
+    }
 }

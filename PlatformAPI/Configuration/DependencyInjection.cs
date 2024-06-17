@@ -3,6 +3,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PlatformAPI.Configuration.Domain;
+using PlatformAPI.Configuration.Interface;
 using Repository;
 using Repository.Interface;
 using Service;
@@ -18,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IBadmintonCourtRepository, BadmintonCourtRepository>();
         services.AddScoped<IServiceCourtRepository, ServiceCourtRepository>();
+        services.AddScoped<ICourtRepository, CourtRepository>();
         return services;
     }
 
@@ -27,6 +30,8 @@ public static class DependencyInjection
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IBadmintonCourtService, BadmintonCourtService>();
         services.AddScoped<IServiceCourtService, ServiceCourtService>();
+        services.AddScoped<ICourtService, CourtService>();
+        services.AddScoped<IImageService, ImageService>();
         return services;
     }
 
@@ -99,6 +104,12 @@ public static class DependencyInjection
                 }
             });
         });
+        return services;
+    }
+
+    public static IServiceCollection AddCloudinarySetting(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<CloudinarySetting>(configuration.GetSection("CloudinarySettings"));
         return services;
     }
 }

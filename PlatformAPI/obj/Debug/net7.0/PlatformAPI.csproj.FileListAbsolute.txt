@@ -86,3 +86,5 @@ E:\Semester 8\EXE201\BadmintonRentalPlatform\PlatformAPI\bin\Debug\net7.0\Micros
 E:\Semester 8\EXE201\BadmintonRentalPlatform\PlatformAPI\bin\Debug\net7.0\DataTransfer.dll
 E:\Semester 8\EXE201\BadmintonRentalPlatform\PlatformAPI\bin\Debug\net7.0\DataTransfer.pdb
 E:\Semester 8\EXE201\BadmintonRentalPlatform\PlatformAPI\bin\Debug\net7.0\AutoMapper.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\PlatformAPI\bin\Debug\net7.0\CloudinaryDotNet.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\PlatformAPI\bin\Debug\net7.0\Newtonsoft.Json.dll

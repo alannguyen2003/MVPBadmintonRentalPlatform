@@ -15,4 +15,9 @@ public class BadmintonCourtRepository : IBadmintonCourtRepository
     {
         await BadmintonCourtDAO.Instance.AddBadmintonCourt(badmintonCourt);
     }
+
+    public async Task AddRangeBadmintonCourtAsync(List<BadmintonCourt> badmintonCourts)
+    {
+        await BadmintonCourtDAO.Instance.AddRangeBadmintonCourt(badmintonCourts);
+    }
 }

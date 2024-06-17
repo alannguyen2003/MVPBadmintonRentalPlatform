@@ -14,6 +14,7 @@ public class BadmintonCourt : BaseEntity
     public int MinuteEnd { get; set; }
     public float PricePerHour { get; set; }
     public float PriceAtWeekend { get; set; }
+    public float PriceAtHoliday { get; set; }
     public string Address { get; set; }
     public int AccountId { get; set; }
     public virtual Account Account { get; set; }

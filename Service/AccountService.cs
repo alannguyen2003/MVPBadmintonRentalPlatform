@@ -62,6 +62,11 @@ public class AccountService : IAccountService
         return await _accountRepository.AddNewAccountAsync(account);
     }
 
+    public async Task AddRangeAccountAsync(List<Account> accounts)
+    {
+        await _accountRepository.AddRangeAccountAsync(accounts);
+    }
+
     public async Task<Account?> RegisterOwner(Account account, BadmintonCourt badmintonCourt)
     {
         return await _accountRepository.RegisterNewOwner(account, badmintonCourt);
@@ -70,5 +75,10 @@ public class AccountService : IAccountService
     public async Task<List<Account>> GetAllAccounts()
     {
         return await _accountRepository.GetAllAccounts();
+    }
+
+    public async Task<List<Account>> GetAccountWithRole(int roleId)
+    {
+        return await _accountRepository.GetAccontWithRole(roleId);
     }
 }

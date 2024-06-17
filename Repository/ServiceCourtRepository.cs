@@ -20,4 +20,9 @@ public class ServiceCourtRepository : IServiceCourtRepository
     {
         await ServiceCourtDAO.Instance.AddService(serviceCourt);
     }
+
+    public async Task AddRangeService(List<ServiceCourt> listService)
+    {
+        await ServiceCourtDAO.Instance.AddRangeServiceCourt(listService);
+    }
 }
