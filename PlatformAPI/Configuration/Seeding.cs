@@ -12,11 +12,13 @@ public class Seeding
     private readonly IBadmintonCourtService _badmintonCourtService;
     private readonly IServiceCourtService _serviceCourtService;
     private readonly ICourtService _courtService;
+    private readonly ISlotService _slotService;
+    private readonly IBankService _bankService;
     private readonly AppDbContext _context;
 
     public Seeding(IAccountService accountService, IRoleService roleService,
         IBadmintonCourtService badmintonCourtService, IServiceCourtService serviceCourtService,
-        ICourtService courtService)
+        ICourtService courtService, ISlotService slotService, IBankService bankService)
     {
         _accountService = accountService;
         _context = new AppDbContext();
@@ -24,6 +26,8 @@ public class Seeding
         _badmintonCourtService = badmintonCourtService;
         _serviceCourtService = serviceCourtService;
         _courtService = courtService;
+        _slotService = slotService;
+        _bankService = bankService;
     }
 
     public async Task MigrateDatabaseAsync()
@@ -107,6 +111,264 @@ public class Seeding
             }
         };
         await _serviceCourtService.AddRangeServiceCourt(serviceCourts);
+    }
+
+    public async Task SeedBanks()
+    {
+        if (await _context.Banks.AnyAsync())
+        {
+            return;
+        }
+
+        List<Bank> banks = new List<Bank>()
+        {
+            new Bank()
+            {
+                BankCode = "ABBank",
+                BankName = "NH TMCP An Bình",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "ACB",
+                BankName = "NH TMCP Á Châu",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Agribank",
+                BankName = "NH Nông Nghiệp Và Phát Triển Nông Thôn VN",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Bac A Bank",
+                BankName = "NH TMCP Bac A",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "BaoViet Bank",
+                BankName = "NH TMCP Bảo Việt",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "BIDV",
+                BankName = "NH TMCP Đầu Tư Và Phát Triển VN",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "BVBank",
+                BankName = "NH TMCP Bản Việt",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "CAKE",
+                BankName = "NH Số CAKE by VPBank",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "CBBank",
+                BankName = "NH TM TNHH MTV Xây Dựng Việt Nam",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "CIMB",
+                BankName = "NH TNHH MTV CIMB Viet Nam",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Co-opBank",
+                BankName = "NH Hợp Tác",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "DBS - HCM",
+                BankName = "NH DBS - Chi nhanh TPHCM",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "DongABank",
+                BankName = "NH TMCP Dong A",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Eximbank",
+                BankName = "NH TMCP Xuất Nhập Khẩu VN",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "GPBank",
+                BankName = "NH TM TNHH MTV Dau Khi Toan Cau",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "HDBank",
+                BankName = "NH TMCP Phat Trien TPHCM",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Hong Leong Bank",
+                BankName = "NH TNHH MTV Hongleong VN",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "HSBC",
+                BankName = "NH TNHH MTV HSBC Viet Nam",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Indovina Bank",
+                BankName = "NH TNHH Indovina",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Industrial Bank Of Korea",
+                BankName = "NH Cong Nghiep Han Quoc CN Ha Noi",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "KB HCM",
+                BankName = "NH Kookmin - Chi nhanh TPHCM",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "KB HN",
+                BankName = "NH Kookmin - Chi nhanh Ha Noi",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "KBank",
+                BankName = "NH Dai Chung TNHH Kasikornbank - Chi nhanh TPHCM",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Kien Long Bank",
+                BankName = "NH TMCP Kien Long",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "LPBank",
+                BankName = "NH TMCP Buu Dien Lien Viet",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "MBBank",
+                BankName = "NH TMCP Quan Doi",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "MSB",
+                BankName = "NH TMCP Hang Hai VN",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Nam A Bank",
+                BankName = "NH TMCP Nam A",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "NCB",
+                BankName = "NH TMCP Quoc Dan",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Nonghyup Bank - HN",
+                BankName = "NH Nonghyup - Chi nhanh HN",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "OCB",
+                BankName = "NH TMCP Phuong Dong",
+                ImageUrl = "",
+                Description = ""
+            },
+            new Bank()
+            {
+                BankCode = "Oceanbank",
+                BankName = "NH TM TNHH MTV Dai Duong",
+                ImageUrl = "",
+                Description = ""
+            }
+        };
+        await _bankService.AddRangeBanks(banks);
+    }
+
+    public async Task SeedSlots()
+    {
+        if (await _context.Slots.AnyAsync())
+        {
+            return;
+        }
+        var slots = new List<Slot>();
+        var badmintonCourts = await _context.BadmintonCourts.ToListAsync();
+        foreach (var badmintonCourt in badmintonCourts)
+        {
+            var courts = await _context.Courts
+                .Where(court => court.BadmintonCourtId == badmintonCourt.Id)
+                .ToListAsync();
+            foreach (var court in courts)
+            {
+                await _slotService.AddRangeSlotsForBadmintonCourt(badmintonCourt.HourStart,
+                    badmintonCourt.MinuteStart, badmintonCourt.HourEnd, badmintonCourt.MinuteEnd, court.Id);
+            }
+        }
     }
 
     public async Task SeedCourts()

@@ -43,11 +43,13 @@ try
 {
     var context = services.GetRequiredService<Seeding>();
     await context.MigrateDatabaseAsync();
+    await context.SeedBanks();
     await context.SeedRole();
     await context.SeedAccount();
     await context.SeedBadmintonCourt();
     await context.SeedBadmintonCourtService();
     await context.SeedCourts();
+    await context.SeedSlots();
 }
 catch (Exception ex)
 {

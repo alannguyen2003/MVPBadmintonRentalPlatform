@@ -20,6 +20,7 @@ public class AppDbContext : DbContext
     public DbSet<ServiceCourt> ServiceCourts { get; set; }
     public DbSet<Slot> Slots { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<Bank> Banks { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -33,6 +34,6 @@ public class AppDbContext : DbContext
             .Build();
         return configuration.GetConnectionString("DefaultConnectionString") ?? "";*/
         return
-            "Data Source=(local);database=BadmintonRentalPlatformDb;uid=sa;pwd=12345;TrustServerCertificate=True;MultipleActiveResultSets=True";
+                "Data Source=(local);database=BadmintonRentalPlatformDb;uid=sa;pwd=12345;TrustServerCertificate=True;MultipleActiveResultSets=True";
     }
 }
