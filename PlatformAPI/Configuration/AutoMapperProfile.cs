@@ -12,6 +12,7 @@ public class AutoMapperProfile : Profile
     {
         AuthenticationEntityMap();
         BadmintonCourtEntityMap();
+        BadmintonCourtServiceEntityMap();
     }
 
     private void AuthenticationEntityMap()
@@ -33,6 +34,12 @@ public class AutoMapperProfile : Profile
         CreateMap<ServiceCourt, ServiceOfCourtResponse>()
             .ReverseMap();
         CreateMap<BadmintonCourtRequest, BadmintonCourt>()
+            .ReverseMap();
+    }
+
+    private void BadmintonCourtServiceEntityMap()
+    {
+        CreateMap<ServiceCourtRequest, ServiceCourt>()
             .ReverseMap();
     }
     

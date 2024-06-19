@@ -67,9 +67,9 @@ public class AccountService : IAccountService
         await _accountRepository.AddRangeAccountAsync(accounts);
     }
 
-    public async Task<Account?> RegisterOwner(Account account, BadmintonCourt badmintonCourt)
+    public async Task<Account?> RegisterOwner(Account account, BadmintonCourt badmintonCourt, List<ServiceCourt> services)
     {
-        return await _accountRepository.RegisterNewOwner(account, badmintonCourt);
+        return await _accountRepository.RegisterNewOwner(account, badmintonCourt, services);
     }
 
     public async Task<List<Account>> GetAllAccounts()

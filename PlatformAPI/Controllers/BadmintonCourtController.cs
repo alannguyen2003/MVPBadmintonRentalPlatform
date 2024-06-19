@@ -67,6 +67,28 @@ public class BadmintonCourtController : ControllerBase
             Message = "Add new badminton court successful!"
         });
     }
+
+    [HttpGet("get-with-owner")]
+    public async Task<IActionResult> GetBadmintonCourtWithOwnerId(int ownerId)
+    {
+        var badmintonCourt = await _badmintonCourtService.GetBadmintonCourtWithOwnerId(ownerId);
+        if (badmintonCourt != null)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Get badminton court successful!",
+                Data = badmintonCourt
+            });
+        }
+
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "No record found!",
+            Data = null
+        });
+    }
     
     
 }

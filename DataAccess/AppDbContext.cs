@@ -21,6 +21,9 @@ public class AppDbContext : DbContext
     public DbSet<Slot> Slots { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Bank> Banks { get; set; }
+    public DbSet<Booking> Bookings { get; set; }
+    public DbSet<BookingSlot> BookingSlots { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -29,11 +32,10 @@ public class AppDbContext : DbContext
 
     private string GetConnectionString()
     {
-        /*IConfiguration configuration = new ConfigurationBuilder()
+        IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
-        return configuration.GetConnectionString("DefaultConnectionString") ?? "";*/
-        return
-                "Data Source=(local);database=BadmintonRentalPlatformDb;uid=sa;pwd=12345;TrustServerCertificate=True;MultipleActiveResultSets=True";
+        return configuration.GetConnectionString("DefaultConnectionString") ?? "";
     }
 }

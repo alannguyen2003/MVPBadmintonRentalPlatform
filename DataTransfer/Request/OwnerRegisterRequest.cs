@@ -10,6 +10,7 @@ public class OwnerRegisterRequest
     public string CardNumber { get; set; }
     
     public string CourtName { get; set; }
+    public string ProfileImage { get; set; }
     public int NumberOfCourt { get; set; }
     public int HourStart { get; set; }
     public int MinuteStart { get; set; }
@@ -18,4 +19,6 @@ public class OwnerRegisterRequest
     public float PricePerHour { get; set; }
     public float PriceAtWeekend { get; set; }
     public string Address { get; set; }
+    
+    public List<ServiceCourtRequest> Services { get; set; }
 }

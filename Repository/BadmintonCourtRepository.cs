@@ -20,4 +20,9 @@ public class BadmintonCourtRepository : IBadmintonCourtRepository
     {
         await BadmintonCourtDAO.Instance.AddRangeBadmintonCourt(badmintonCourts);
     }
+
+    public async Task<BadmintonCourt?> GetBadmintonCourtWithOwner(int ownerId)
+    {
+        return await BadmintonCourtDAO.Instance.GetBadmintonCourtWithOwnerId(ownerId);
+    }
 }

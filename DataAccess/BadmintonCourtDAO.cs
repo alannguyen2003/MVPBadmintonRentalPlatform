@@ -42,4 +42,10 @@ public class BadmintonCourtDAO
         await _context.BadmintonCourts.AddRangeAsync(badmintonCourts);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<BadmintonCourt?> GetBadmintonCourtWithOwnerId(int ownerId)
+    {
+        return await _context.BadmintonCourts
+            .FirstOrDefaultAsync(court => court.AccountId == ownerId);
+    }
 }

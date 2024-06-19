@@ -31,9 +31,9 @@ public class AccountRepository : IAccountRepository
         await AccountDAO.Instance.AddRangeAccountAsync(accounts);
     }
 
-    public async Task<Account?> RegisterNewOwner(Account account, BadmintonCourt badmintonCourt)
+    public async Task<Account?> RegisterNewOwner(Account account, BadmintonCourt badmintonCourt, List<ServiceCourt> services)
     {
-        var accountOwner = await AuthenticationDAO.Instance.OwnerRegister(account, badmintonCourt);
+        var accountOwner = await AuthenticationDAO.Instance.OwnerRegister(account, badmintonCourt, services);
         return accountOwner;
     }
 

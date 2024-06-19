@@ -10,7 +10,7 @@ public interface IAccountRepository
     public Task<Account?> AddNewAccountAsync(Account account);
     public Task AddRangeAccountAsync(List<Account> accounts);
 
-    public Task<Account?> RegisterNewOwner(Account account, BadmintonCourt badmintonCourt);
+    public Task<Account?> RegisterNewOwner(Account account, BadmintonCourt badmintonCourt, List<ServiceCourt> services);
     public Task<List<Account>> GetAllAccounts();
     public Task<List<Account>> GetAccontWithRole(int roleId);
 }

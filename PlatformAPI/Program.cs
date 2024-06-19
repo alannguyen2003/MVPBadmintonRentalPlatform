@@ -43,6 +43,7 @@ try
 {
     var context = services.GetRequiredService<Seeding>();
     await context.MigrateDatabaseAsync();
+    await context.SeedPaymentMethod();
     await context.SeedBanks();
     await context.SeedRole();
     await context.SeedAccount();

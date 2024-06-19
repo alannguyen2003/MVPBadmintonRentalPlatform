@@ -118,16 +118,17 @@ public class AuthenticationController : ControllerBase
     {
         try
         {
+            var services = _mapper.Map<List<ServiceCourt>>(request.Services);
+            request.Services = null;
             var account = _mapper.Map<Account>(request);
             var badmintonCourt = _mapper.Map<BadmintonCourt>(request);
             account.RoleId = 2;
-            badmintonCourt.ProfileImage = "";
-            var accountRegister = await _accountService.RegisterOwner(account, badmintonCourt);
+            var accountRegister = await _accountService.RegisterOwner(account, badmintonCourt, services);
             return Ok(new ApiResponse()
             {
                 StatusCode = 201,
                 Message = "Register successful!",
-                Data = await _accountService.GenerateJwtToken(accountRegister)
+                Data = services
             });
         }
         catch (Exception ex)

@@ -14,11 +14,13 @@ public class Seeding
     private readonly ICourtService _courtService;
     private readonly ISlotService _slotService;
     private readonly IBankService _bankService;
+    private readonly IPaymentMethodService _paymentMethodService;
     private readonly AppDbContext _context;
 
     public Seeding(IAccountService accountService, IRoleService roleService,
         IBadmintonCourtService badmintonCourtService, IServiceCourtService serviceCourtService,
-        ICourtService courtService, ISlotService slotService, IBankService bankService)
+        ICourtService courtService, ISlotService slotService, IBankService bankService,
+        IPaymentMethodService paymentMethodService)
     {
         _accountService = accountService;
         _context = new AppDbContext();
@@ -28,11 +30,110 @@ public class Seeding
         _courtService = courtService;
         _slotService = slotService;
         _bankService = bankService;
+        _paymentMethodService = paymentMethodService;
     }
 
     public async Task MigrateDatabaseAsync()
     {
         await _context.Database.MigrateAsync();
+    }
+
+    public async Task SeedPaymentMethod()
+    {
+        if (await _context.PaymentMethods.AnyAsync())
+        {
+            return;
+        }
+
+        var payments = new List<PaymentMethod>()
+        {
+            new PaymentMethod()
+            {
+                PaymentName = "Cash On Delivery",
+                BankId = 1
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 2
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 3
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 4
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 5
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 6
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 7
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 8
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 9
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 10
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 11
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 12
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 13
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 14
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 15
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 16
+            },
+            new PaymentMethod()
+            {
+                PaymentName = "Banking",
+                BankId = 17
+            }
+        };
+        await _paymentMethodService.AddRangePaymentMethodAsync(payments);
     }
 
     public async Task SeedBadmintonCourtService()

@@ -24,12 +24,17 @@ public class AuthenticationDAO
         }
     }
 
-    public async Task<Account?> OwnerRegister(Account account, BadmintonCourt badmintonCourt)
+    public async Task<Account?> OwnerRegister(Account account, BadmintonCourt badmintonCourt, List<ServiceCourt> services)
     {
         await _context.Accounts.AddAsync(account);
         await _context.SaveChangesAsync();
         badmintonCourt.AccountId = account.Id;
         await _context.BadmintonCourts.AddAsync(badmintonCourt);
+        foreach (var item in services)
+        {
+            item.BadmintonCourtId = badmintonCourt.Id;
+        }
+        await _context.ServiceCourts.AddRangeAsync(services);
         await _context.SaveChangesAsync();
         return account;
     }
