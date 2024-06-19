@@ -25,4 +25,9 @@ public class BadmintonCourtRepository : IBadmintonCourtRepository
     {
         return await BadmintonCourtDAO.Instance.GetBadmintonCourtWithOwnerId(ownerId);
     }
+
+    public async Task<BadmintonCourt?> GetBadmintonCourt(int badmintonCourtId)
+    {
+        return await BadmintonCourtDAO.Instance.GetBadmintonCourt(badmintonCourtId);
+    }
 }

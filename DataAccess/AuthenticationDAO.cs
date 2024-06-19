@@ -30,12 +30,12 @@ public class AuthenticationDAO
         await _context.SaveChangesAsync();
         badmintonCourt.AccountId = account.Id;
         await _context.BadmintonCourts.AddAsync(badmintonCourt);
+        await _context.SaveChangesAsync();
         foreach (var item in services)
         {
             item.BadmintonCourtId = badmintonCourt.Id;
         }
-        await _context.ServiceCourts.AddRangeAsync(services);
-        await _context.SaveChangesAsync();
+        await ServiceCourtDAO.Instance.AddRangeServiceCourt(services);
         return account;
     }
 }

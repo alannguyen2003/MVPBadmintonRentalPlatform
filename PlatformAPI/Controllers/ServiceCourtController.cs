@@ -13,11 +13,14 @@ namespace PlatformAPI.Controllers;
 public class ServiceCourtController : ControllerBase
 {
     private readonly IServiceCourtService _serviceCourtService;
+    private readonly IBadmintonCourtService _badmintonCourtService;
     private readonly IMapper _mapper;
 
-    public ServiceCourtController(IServiceCourtService serviceCourtService, IMapper mapper)
+    public ServiceCourtController(IServiceCourtService serviceCourtService,
+        IBadmintonCourtService badmintonCourtService, IMapper mapper)
     {
         _serviceCourtService = serviceCourtService;
+        _badmintonCourtService = badmintonCourtService;
         _mapper = mapper;
     }
 
@@ -54,7 +57,8 @@ public class ServiceCourtController : ControllerBase
             {
                 Services = new List<string>()
             };
-            response.CourtName = services.FirstOrDefault().BadmintonCourt.CourtName;
+            var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(badmintonCourtId);
+            response.CourtName = badmintonCourt!.CourtName;
             foreach (var item in services)
             {
                 response.Services.Add(item.ServiceName);

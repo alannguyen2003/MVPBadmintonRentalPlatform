@@ -48,4 +48,10 @@ public class BadmintonCourtDAO
         return await _context.BadmintonCourts
             .FirstOrDefaultAsync(court => court.AccountId == ownerId);
     }
+
+    public async Task<BadmintonCourt?> GetBadmintonCourt(int badmintonCourtId)
+    {
+        return await _context.BadmintonCourts
+            .FindAsync(badmintonCourtId);
+    }
 }

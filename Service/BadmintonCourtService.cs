@@ -31,4 +31,9 @@ public class BadmintonCourtService : IBadmintonCourtService
     {
         return await _badmintonCourtRepository.GetBadmintonCourtWithOwner(ownerId);
     }
+
+    public async Task<BadmintonCourt?> GetBadmintonCourt(int badmintonCourt)
+    {
+        return await _badmintonCourtRepository.GetBadmintonCourt(badmintonCourt);
+    }
 }
