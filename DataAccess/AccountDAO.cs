@@ -80,4 +80,10 @@ public class AccountDAO
         await _context.Accounts.AddRangeAsync(accounts);
         await _context.SaveChangesAsync();
     }
+
+    public async Task EditProfile(Account account)
+    {
+        _context.Attach(account).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+    }
 }

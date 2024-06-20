@@ -46,4 +46,13 @@ public class AccountRepository : IAccountRepository
     {
         return await AccountDAO.Instance.GetAccountWithRole(roleId);
     }
+
+    public async Task EditProfileAsync(Account account)
+    {
+        var accountResponse = await GetAccount(account.Id);
+        accountResponse.Email = account.Email;
+        accountResponse.FullName = account.FullName;
+        accountResponse.PhoneNumber = account.PhoneNumber;
+        await AccountDAO.Instance.EditProfile(accountResponse);
+    }
 }

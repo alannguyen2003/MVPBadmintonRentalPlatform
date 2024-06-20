@@ -54,4 +54,19 @@ public class BadmintonCourtDAO
         return await _context.BadmintonCourts
             .FindAsync(badmintonCourtId);
     }
+
+    public async Task<List<Slot>> GetAllSlotsOfBadmintonCourt(int badmintonCourtId)
+    {
+        var courts = await _context.Courts
+            .Where(court => court.BadmintonCourtId == badmintonCourtId)
+            .ToListAsync();
+        List<Slot> slots = new List<Slot>();
+        foreach (var court in courts)
+        {
+            slots.AddRange(await _context.Slots
+                .Where(slot => slot.CourtId == court.Id)
+                .ToListAsync());
+        }
+        return slots;
+    }
 }

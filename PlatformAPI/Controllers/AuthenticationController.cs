@@ -99,6 +99,9 @@ public class AuthenticationController : ControllerBase
         {
             var account = _mapper.Map<Account>(request);
             account.RoleId = 1;
+            account.Bank = "";
+            account.CardNumber = "";
+            account.Gender = "";
             var accountRegister = await _accountService.AddNewAccountAsync(account);
             return Ok(new ApiResponse()
             {
@@ -109,7 +112,7 @@ public class AuthenticationController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest("Error in register: " + ex.Message);
+            return BadRequest("Error in register: " + ex.InnerException);
         }
     }
 
@@ -123,17 +126,18 @@ public class AuthenticationController : ControllerBase
             var account = _mapper.Map<Account>(request);
             var badmintonCourt = _mapper.Map<BadmintonCourt>(request);
             account.RoleId = 2;
+            account.Gender = "";
             var accountRegister = await _accountService.RegisterOwner(account, badmintonCourt, services);
             return Ok(new ApiResponse()
             {
                 StatusCode = 201,
                 Message = "Register successful!",
-                Data = services
+                Data = await _accountService.GenerateJwtToken(account)
             });
         }
         catch (Exception ex)
         {
-            return BadRequest("Error in register: " + ex);
+            return BadRequest("Error in register: " + ex.InnerException);
         }
     }
 }

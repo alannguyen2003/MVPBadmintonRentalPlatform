@@ -646,6 +646,7 @@ public class Seeding
                 FullName = "Hồ Dương Trung Nguyên",
                 PhoneNumber = "0847919292",
                 DateOfBirth = DateTime.Now,
+                Gender = "",
                 Bank = "",
                 CardNumber = "",
                 RoleId = 2
@@ -657,6 +658,7 @@ public class Seeding
                 FullName = "Trần Ánh Minh",
                 PhoneNumber = "0123456789",
                 DateOfBirth = DateTime.Now,
+                Gender = "",
                 Bank = "",
                 CardNumber = "",
                 RoleId = 2
@@ -668,6 +670,7 @@ public class Seeding
                 FullName = "Phạm Vĩnh Sơn",
                 PhoneNumber = "0918213432",
                 DateOfBirth = DateTime.Now,
+                Gender = "",
                 Bank = "",
                 CardNumber = "",
                 RoleId = 2
@@ -679,6 +682,7 @@ public class Seeding
                 FullName = "Đỗ Đặng Phúc Anh",
                 PhoneNumber = "0913283481",
                 DateOfBirth = DateTime.Now,
+                Gender = "",
                 Bank = "",
                 CardNumber = "",
                 RoleId = 2
@@ -690,6 +694,7 @@ public class Seeding
                 FullName = "Tran Nguyet Anh",
                 PhoneNumber = "0874234128",
                 DateOfBirth = DateTime.Now,
+                Gender = "",
                 Bank = "",
                 CardNumber = "",
                 RoleId = 3
@@ -700,7 +705,8 @@ public class Seeding
                 Password = "12345",
                 FullName = "Nguyen Ngoc Nghi",
                 PhoneNumber = "0857281943",
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = DateTime.Now,               
+                Gender = "",
                 Bank = "",
                 CardNumber = "",
                 RoleId = 1
@@ -712,6 +718,7 @@ public class Seeding
                 FullName = "Nguyen Hoang Lam",
                 PhoneNumber = "0542312945",
                 DateOfBirth = DateTime.Now,
+                Gender = "",
                 Bank = "",
                 CardNumber = "",
                 RoleId = 2

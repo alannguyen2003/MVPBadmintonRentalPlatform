@@ -30,4 +30,9 @@ public class BadmintonCourtRepository : IBadmintonCourtRepository
     {
         return await BadmintonCourtDAO.Instance.GetBadmintonCourt(badmintonCourtId);
     }
+
+    public async Task<List<Slot>> GetAllSlotsOfBadmintonCourt(int badmintonCourt)
+    {
+        return await BadmintonCourtDAO.Instance.GetAllSlotsOfBadmintonCourt(badmintonCourt);
+    }
 }

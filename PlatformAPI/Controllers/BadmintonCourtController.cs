@@ -3,6 +3,7 @@ using AutoMapper;
 using BusinessObject;
 using DataTransfer;
 using DataTransfer.Request;
+using DataTransfer.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interface;
@@ -15,25 +16,42 @@ namespace PlatformAPI.Controllers;
 public class BadmintonCourtController : ControllerBase
 {
     private readonly IBadmintonCourtService _badmintonCourtService;
+    private readonly IServiceCourtService _serviceCourtService;
     private readonly IMapper _mapper;
 
-    public BadmintonCourtController(IBadmintonCourtService badmintonCourtService, IMapper mapper)
+    public BadmintonCourtController(IBadmintonCourtService badmintonCourtService, IMapper mapper,
+        IServiceCourtService serviceCourtService)
     {
         _badmintonCourtService = badmintonCourtService;
+        _serviceCourtService = serviceCourtService;
         _mapper = mapper;
     }
 
-    [HttpGet("get-all-badmintonton-courts")]
+    [HttpGet("get-all-badminton-courts")]
     public async Task<IActionResult> GetAllBadmintonCourts()
     {
         var badmintonCourts = await _badmintonCourtService.GetAllBadmintonCourts();
         if (badmintonCourts.Any())
         {
+            var badmintonCourtResponse = _mapper.Map<List<BadmintonCourtResponse>>(badmintonCourts);
+            for (int i = 0; i < badmintonCourts.Count; i++)
+            {
+                badmintonCourtResponse[i].AvailableTime = 
+                    badmintonCourts[i].HourStart + ":" + badmintonCourts[i].MinuteEnd + " - " +
+                    badmintonCourts[i].HourEnd + ":" + badmintonCourts[i].MinuteEnd;
+                var services = await _serviceCourtService.GetAllSerivcesBasedOnBadmintonCourt(badmintonCourts[i].Id);
+                badmintonCourtResponse[i].ServiceCourts = new List<string>();
+                foreach (var item in services)
+                {
+                    badmintonCourtResponse[i].ServiceCourts.Add(item.ServiceName);
+                }
+            }
+            
             return Ok(new ApiResponse()
             {
                 StatusCode = 200,
                 Message = "Successful!",
-                Data = badmintonCourts
+                Data = badmintonCourtResponse
             });
         }
 
@@ -72,6 +90,28 @@ public class BadmintonCourtController : ControllerBase
     public async Task<IActionResult> GetBadmintonCourtWithOwnerId(int ownerId)
     {
         var badmintonCourt = await _badmintonCourtService.GetBadmintonCourtWithOwnerId(ownerId);
+        if (badmintonCourt != null)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Get badminton court successful!",
+                Data = badmintonCourt
+            });
+        }
+
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "No record found!",
+            Data = null
+        });
+    }
+    
+    [HttpGet("get-by-id")]
+    public async Task<IActionResult> GetBadmintonCourt(int badmintonCourtId)
+    {
+        var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(badmintonCourtId);
         if (badmintonCourt != null)
         {
             return Ok(new ApiResponse()

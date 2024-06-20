@@ -13,4 +13,5 @@ public interface IAccountRepository
     public Task<Account?> RegisterNewOwner(Account account, BadmintonCourt badmintonCourt, List<ServiceCourt> services);
     public Task<List<Account>> GetAllAccounts();
     public Task<List<Account>> GetAccontWithRole(int roleId);
+    public Task EditProfileAsync(Account account);
 }

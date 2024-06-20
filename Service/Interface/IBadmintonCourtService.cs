@@ -9,4 +9,5 @@ public interface IBadmintonCourtService
     public Task AddRangeBadmintonCourt(List<BadmintonCourt> badmintonCourts);
     public Task<BadmintonCourt?> GetBadmintonCourtWithOwnerId(int ownerId);
     public Task<BadmintonCourt?> GetBadmintonCourt(int badmintonCourt);
+    public Task<List<Slot>> GetAllSlotsOfBadmintonCourt(int badmintonCourtId);
 }

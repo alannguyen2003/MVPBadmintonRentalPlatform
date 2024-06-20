@@ -81,4 +81,9 @@ public class AccountService : IAccountService
     {
         return await _accountRepository.GetAccontWithRole(roleId);
     }
+
+    public async Task EditProfileAsync(Account account)
+    {
+        await _accountRepository.EditProfileAsync(account);
+    }
 }

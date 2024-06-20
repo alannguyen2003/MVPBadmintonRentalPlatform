@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using BusinessObject;
 using DataTransfer;
+using DataTransfer.Request;
 using DataTransfer.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,4 +52,31 @@ public class UserController : ControllerBase
         });
     }
 
+    [HttpPost("edit-user-profile")]
+    public async Task<IActionResult> EditUserProfileAsync(EditAccountRequest request)
+    {
+        try
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var account = _mapper.Map<Account>(request);
+            var userId = identity.FindFirst("UserId").Value;
+            account.Id = Int32.Parse(userId);
+            await _accountService.EditProfileAsync(account);
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200, 
+                Message = "Edit user profile successful!",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "Edit profile failed, see log: " + ex.Message,
+                Data = null
+            });
+        }
+    }
 }

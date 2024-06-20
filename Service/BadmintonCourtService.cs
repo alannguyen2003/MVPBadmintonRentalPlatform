@@ -36,4 +36,9 @@ public class BadmintonCourtService : IBadmintonCourtService
     {
         return await _badmintonCourtRepository.GetBadmintonCourt(badmintonCourt);
     }
+
+    public async Task<List<Slot>> GetAllSlotsOfBadmintonCourt(int badmintonCourtId)
+    {
+        return await _badmintonCourtRepository.GetAllSlotsOfBadmintonCourt(badmintonCourtId);
+    }
 }

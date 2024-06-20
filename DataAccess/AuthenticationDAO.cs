@@ -38,4 +38,9 @@ public class AuthenticationDAO
         await ServiceCourtDAO.Instance.AddRangeServiceCourt(services);
         return account;
     }
+
+    public async Task AddSlotForBadmintonCourt(int badmintonCourtId)
+    {
+        
+    }
 }
