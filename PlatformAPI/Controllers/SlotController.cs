@@ -26,13 +26,6 @@ public class SlotController : ControllerBase
     {
         var slots = await _slotService.GetAllSlots();
         var slotsResponse = _mapper.Map<List<SlotResponse>>(slots);
-        for(int i = 0; i < slots.Count; i++)
-        {
-            var minuteStart = slots[i].MinuteStart == 0 ? "00" : "" + slots[i].MinuteStart;
-            var minuteEnd = slots[i].MinuteEnd == 0 ? "00" : "" + slots[i].MinuteEnd;
-            slotsResponse[i].TimeFrame = slots[i].HourStart + ":" + minuteStart + " - " +
-                                         slots[i].HourEnd + ":" + minuteEnd;
-        }
         if (slots.Any())
         {
             return Ok(new ApiResponse()
@@ -54,13 +47,6 @@ public class SlotController : ControllerBase
     {
         var slots = await _slotService.GetAllSlotsWithCourt(courtId);
         var slotsResponse = _mapper.Map<List<SlotResponse>>(slots);
-        for(int i = 0; i < slots.Count; i++)
-        {
-            var minuteStart = slots[i].MinuteStart == 0 ? "00" : "" + slots[i].MinuteStart;
-            var minuteEnd = slots[i].MinuteEnd == 0 ? "00" : "" + slots[i].MinuteEnd;
-            slotsResponse[i].TimeFrame = slots[i].HourStart + ":" + minuteStart + " - " +
-                                         slots[i].HourEnd + ":" + minuteEnd;
-        }
         if (slots.Any())
         {
             return Ok(new ApiResponse()
@@ -82,13 +68,6 @@ public class SlotController : ControllerBase
     {
         var slots = await _badmintonCourtService.GetAllSlotsOfBadmintonCourt(badmintonCourtId);
         var slotsResponse = _mapper.Map<List<SlotResponse>>(slots);
-        for(int i = 0; i < slots.Count; i++)
-        {
-            var minuteStart = slots[i].MinuteStart == 0 ? "00" : "" + slots[i].MinuteStart;
-            var minuteEnd = slots[i].MinuteEnd == 0 ? "00" : "" + slots[i].MinuteEnd;
-            slotsResponse[i].TimeFrame = slots[i].HourStart + ":" + minuteStart + " - " +
-                                         slots[i].HourEnd + ":" + minuteEnd;
-        }
         if (slots.Any())
         {
             return Ok(new ApiResponse()

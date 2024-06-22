@@ -1,4 +1,5 @@
 ﻿using BusinessObject;
+using DataTransfer.Response;
 
 namespace Service.Interface;
 
@@ -10,4 +11,5 @@ public interface IBadmintonCourtService
     public Task<BadmintonCourt?> GetBadmintonCourtWithOwnerId(int ownerId);
     public Task<BadmintonCourt?> GetBadmintonCourt(int badmintonCourt);
     public Task<List<Slot>> GetAllSlotsOfBadmintonCourt(int badmintonCourtId);
+    public Task<List<BadmintonCourt>> SearchBadmintonCourtByName(string search);
 }

@@ -52,25 +52,6 @@ public class SlotDAO
         return listSlot;
     }
 
-    public async Task AddRangeSlotForBadmintonCourt(TimeSpan startTime, TimeSpan endTime, TimeSpan slotDuration, int courtId)
-    {
-        List<int> hours = new List<int>();
-        List<int> minutes = new List<int>();
-        GenerateTimeSlots(startTime, endTime, slotDuration, out hours, out minutes);
-        for (int i = 0; i < hours.Count-1; i++)
-        {
-            await _context.Slots.AddAsync(new Slot()
-            {
-                HourStart = hours[i],
-                MinuteStart = minutes[i],
-                HourEnd = hours[i + 1],
-                MinuteEnd = minutes[i + 1],
-                CourtId = courtId
-            });
-        }
-        await _context.SaveChangesAsync();
-    }
-
     public void GenerateTimeSlots(TimeSpan startTime, TimeSpan endTime, TimeSpan slotDuration, out List<int> hours,
         out List<int> minutes)
     {

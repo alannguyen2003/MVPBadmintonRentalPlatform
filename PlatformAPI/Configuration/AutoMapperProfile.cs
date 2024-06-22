@@ -14,6 +14,8 @@ public class AutoMapperProfile : Profile
         BadmintonCourtEntityMap();
         BadmintonCourtServiceEntityMap();
         SlotBadmintonCourtEntityMap();
+        BookingBadmintonCourtEntityMap();
+        TransactionEntityMap();
     }
 
     private void AuthenticationEntityMap()
@@ -53,7 +55,22 @@ public class AutoMapperProfile : Profile
         CreateMap<Slot, SlotResponse>()
             .ReverseMap();
     }
-    
-    
-    
+
+    private void BookingBadmintonCourtEntityMap()
+    {
+        CreateMap<Booking, BookingResponse>()
+            .ReverseMap();
+    }
+
+    private void BookingStatusEntityMap()
+    {
+        CreateMap<CreateBookingRequest, Booking>()
+            .ReverseMap();
+    }
+
+    private void TransactionEntityMap()
+    {
+        CreateMap<TransactionRequest, Transaction>()
+            .ReverseMap();
+    }
 }

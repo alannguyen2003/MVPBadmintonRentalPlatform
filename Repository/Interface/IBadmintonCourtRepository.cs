@@ -10,4 +10,5 @@ public interface IBadmintonCourtRepository
     public Task<BadmintonCourt?> GetBadmintonCourtWithOwner(int ownerId);
     public Task<BadmintonCourt?> GetBadmintonCourt(int badmintonCourtId);
     public Task<List<Slot>> GetAllSlotsOfBadmintonCourt(int badmintonCourt);
+    public Task<List<BadmintonCourt>> SearchBadmintonCourtByName(string search);
 }

@@ -25,4 +25,9 @@ public class CourtRepository : ICourtRepository
     {
         await CourtDAO.Instance.AddRangeCourts(courts);
     }
+
+    public async Task<Court?> GetCourt(int courtId)
+    {
+        return await CourtDAO.Instance.GetCourt(courtId);
+    }
 }

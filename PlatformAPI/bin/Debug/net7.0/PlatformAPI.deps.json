@@ -1102,6 +1102,7 @@
       },
       "Service/1.0.0": {
         "dependencies": {
+          "DataTransfer": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.0",
           "Repository": "1.0.0"
         },

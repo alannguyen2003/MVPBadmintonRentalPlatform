@@ -1,4 +1,5 @@
 ﻿using BusinessObject;
+using DataTransfer.Response;
 using Repository.Interface;
 using Service.Interface;
 
@@ -40,5 +41,10 @@ public class BadmintonCourtService : IBadmintonCourtService
     public async Task<List<Slot>> GetAllSlotsOfBadmintonCourt(int badmintonCourtId)
     {
         return await _badmintonCourtRepository.GetAllSlotsOfBadmintonCourt(badmintonCourtId);
+    }
+
+    public async Task<List<BadmintonCourt>> SearchBadmintonCourtByName(string search)
+    {
+        return await _badmintonCourtRepository.SearchBadmintonCourtByName(search);
     }
 }

@@ -103,16 +103,28 @@ public class AuthenticationController : ControllerBase
             account.CardNumber = "";
             account.Gender = "";
             var accountRegister = await _accountService.AddNewAccountAsync(account);
-            return Ok(new ApiResponse()
+            if (accountRegister != null)
             {
-                StatusCode = 201,
-                Message = "Register successful!",
-                Data = await _accountService.GenerateJwtToken(accountRegister)
-            });
+                return Ok(new ApiResponse()
+                {
+                    StatusCode = 201,
+                    Message = "Register successful!",
+                    Data = await _accountService.GenerateJwtToken(accountRegister)
+                });
+            }
+            else
+            {
+                return Ok(new ApiResponse()
+                {
+                    StatusCode = 400,
+                    Message = "Your email is already registered, please try again!"
+                });
+            }
+            
         }
         catch (Exception ex)
         {
-            return BadRequest("Error in register: " + ex.InnerException);
+            return BadRequest("Error in register: " + ex.Message);
         }
     }
 

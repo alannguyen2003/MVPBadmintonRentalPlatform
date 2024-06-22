@@ -22,8 +22,12 @@ public class AppDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<Bank> Banks { get; set; }
     public DbSet<Booking> Bookings { get; set; }
-    public DbSet<BookingSlot> BookingSlots { get; set; }
-    public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<BookingDetail> BookingSlots { get; set; }
+    public DbSet<BookingStatus> BookingStatuses { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<TransactionType> TransactionTypes { get; set; }
+    public DbSet<SlotStatus> SlotStatuses { get; set; }
+    public DbSet<TransactionStatus> TransactionStatuses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

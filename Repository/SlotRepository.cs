@@ -20,9 +20,4 @@ public class SlotRepository : ISlotRepository
     {
         return await SlotDAO.Instance.GetAllSlotsOfBadmintonCourt(badmintonCourtId);
     }
-
-    public async Task AddRangeSlotsForBadmintonCourt(TimeSpan startTime, TimeSpan endTime, TimeSpan slotDuration, int courtId)
-    {
-        await SlotDAO.Instance.AddRangeSlotForBadmintonCourt(startTime, endTime, slotDuration, courtId);
-    }
 }

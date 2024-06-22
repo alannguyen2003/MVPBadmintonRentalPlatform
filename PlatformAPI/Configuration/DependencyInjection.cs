@@ -23,7 +23,12 @@ public static class DependencyInjection
         services.AddScoped<ICourtRepository, CourtRepository>();
         services.AddScoped<ISlotRepository, SlotRepository>();
         services.AddScoped<IBankRepository, BankRepository>();
-        services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+        services.AddScoped<IBookingRepository, BookingRepository>();
+        services.AddScoped<IBookingStatusRepository, BookingStatusRepository>();
+        services.AddScoped<ITransactionTypeRepository, TransactionTypeRepository>();
+        services.AddScoped<ISlotStatusRepository, SlotStatusRepository>();
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
+        services.AddScoped<ITransactionStatusRepository, TransactionStatusRepository>();
         return services;
     }
 
@@ -37,7 +42,13 @@ public static class DependencyInjection
         services.AddScoped<IImageService, ImageService>();
         services.AddScoped<ISlotService, SlotService>();
         services.AddScoped<IBankService, BankService>();
-        services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+        services.AddScoped<IBookingService, BookingService>();
+        services.AddScoped<Utilization>();
+        services.AddScoped<IBookingStatusService, BookingStatusService>();
+        services.AddScoped<ISlotStatusService, SlotStatusService>();
+        services.AddScoped<ITransactionTypeService, TransactionTypeService>();
+        services.AddScoped<ITransactionService, TransactionService>();
+        services.AddScoped<ITransactionStatusService, TransactionStatusService>();
         return services;
     }
 

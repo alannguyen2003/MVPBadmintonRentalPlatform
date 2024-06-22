@@ -1,6 +1,7 @@
 ﻿using BusinessObject;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
+using Repository.Interface;
 using Service.Interface;
 
 namespace PlatformAPI.Configuration;
@@ -14,13 +15,19 @@ public class Seeding
     private readonly ICourtService _courtService;
     private readonly ISlotService _slotService;
     private readonly IBankService _bankService;
-    private readonly IPaymentMethodService _paymentMethodService;
+    private readonly ITransactionTypeService _transactionTypeService;
+    private readonly IBookingStatusService _bookingStatusService;
+    private readonly ISlotStatusService _slotStatusService;
+    private readonly ITransactionService _transactionService;
+    private readonly ITransactionStatusService _transactionStatusService;
     private readonly AppDbContext _context;
 
     public Seeding(IAccountService accountService, IRoleService roleService,
         IBadmintonCourtService badmintonCourtService, IServiceCourtService serviceCourtService,
         ICourtService courtService, ISlotService slotService, IBankService bankService,
-        IPaymentMethodService paymentMethodService)
+        ITransactionTypeService transactionTypeService, IBookingStatusService bookingStatusService,
+        ISlotStatusService slotStatusService, ITransactionStatusService transactionStatusService,
+        ITransactionService transactionService)
     {
         _accountService = accountService;
         _context = new AppDbContext();
@@ -30,7 +37,11 @@ public class Seeding
         _courtService = courtService;
         _slotService = slotService;
         _bankService = bankService;
-        _paymentMethodService = paymentMethodService;
+        _transactionTypeService = transactionTypeService;
+        _bookingStatusService = bookingStatusService;
+        _slotStatusService = slotStatusService;
+        _transactionService = transactionService;
+        _transactionStatusService = transactionStatusService;
     }
 
     public async Task MigrateDatabaseAsync()
@@ -38,102 +49,99 @@ public class Seeding
         await _context.Database.MigrateAsync();
     }
 
-    public async Task SeedPaymentMethod()
+    public async Task SeedTransactionStatus()
     {
-        if (await _context.PaymentMethods.AnyAsync())
+        if (await _context.TransactionStatuses.AnyAsync())
+        {
+            return;
+        }
+        var transactionStatuses = new List<TransactionStatus>()
+        {
+            new TransactionStatus()
+            {
+                Status = "Verifying"
+            },
+            new TransactionStatus()
+            {
+                Status = "Approved"
+            },
+            new TransactionStatus()
+            {
+                Status = "Rejected"
+            }
+        };
+        await _transactionStatusService.AddRangeTransactionStatus(transactionStatuses);
+    }
+
+    public async Task SeedTransactionType()
+    {
+        if (await _context.TransactionTypes.AnyAsync())
         {
             return;
         }
 
-        var payments = new List<PaymentMethod>()
+        var transactionTypes = new List<TransactionType>()
         {
-            new PaymentMethod()
+            new TransactionType()
             {
-                PaymentName = "Cash On Delivery",
-                BankId = 1
+                TypeOfTransaction = "Cash In"
             },
-            new PaymentMethod()
+            new TransactionType()
             {
-                PaymentName = "Banking",
-                BankId = 2
+                TypeOfTransaction = "Cash Out"
             },
-            new PaymentMethod()
+            new TransactionType()
             {
-                PaymentName = "Banking",
-                BankId = 3
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 4
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 5
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 6
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 7
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 8
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 9
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 10
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 11
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 12
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 13
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 14
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 15
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 16
-            },
-            new PaymentMethod()
-            {
-                PaymentName = "Banking",
-                BankId = 17
+                TypeOfTransaction = "Booking"
             }
         };
-        await _paymentMethodService.AddRangePaymentMethodAsync(payments);
+        await _transactionTypeService.AddRangeTransactionType(transactionTypes);
+    }
+
+    public async Task SeedSlotStatus()
+    {
+        if (await _context.SlotStatuses.AnyAsync())
+        {
+            return;
+        }
+
+        var slotStatuses = new List<SlotStatus>()
+        {
+            new SlotStatus()
+            {
+                Status = "Booked"
+            }
+        };
+        await _slotStatusService.AddRangeSlotStatus(slotStatuses);
+    }
+
+    public async Task SeedBookingStatus()
+    {
+        if (await _context.BookingStatuses.AnyAsync())
+        {
+            return;
+        }
+
+        var bookingStatus = new List<BookingStatus>()
+        {
+            new BookingStatus()
+            {
+                Status = "Verifying"
+            },
+            new BookingStatus()
+            {
+                Status = "Booked"
+            },
+            new BookingStatus()
+            {
+                Status = "Done"
+            },
+            new BookingStatus()
+            {
+                Status = "Cancel"
+            }
+        };
+        await _bookingStatusService.AddRangeBookingStatus(bookingStatus);
     }
 
     public async Task SeedBadmintonCourtService()
@@ -451,27 +459,6 @@ public class Seeding
         await _bankService.AddRangeBanks(banks);
     }
 
-    public async Task SeedSlots()
-    {
-        if (await _context.Slots.AnyAsync())
-        {
-            return;
-        }
-        var slots = new List<Slot>();
-        var badmintonCourts = await _context.BadmintonCourts.ToListAsync();
-        foreach (var badmintonCourt in badmintonCourts)
-        {
-            var courts = await _context.Courts
-                .Where(court => court.BadmintonCourtId == badmintonCourt.Id)
-                .ToListAsync();
-            foreach (var court in courts)
-            {
-                await _slotService.AddRangeSlotsForBadmintonCourt(badmintonCourt.HourStart,
-                    badmintonCourt.MinuteStart, badmintonCourt.HourEnd, badmintonCourt.MinuteEnd, court.Id);
-            }
-        }
-    }
-
     public async Task SeedCourts()
     {
         if (await _context.Courts.AnyAsync())
@@ -526,7 +513,7 @@ public class Seeding
             new BadmintonCourt()
             {
                 //Id = 1;
-                CourtName = "Vu Tru",
+                CourtName = "Vũ Trụ",
                 HourStart = 5,
                 MinuteStart = 0,
                 HourEnd = 23,
@@ -573,7 +560,7 @@ public class Seeding
             new BadmintonCourt()
             {
                 //Id = 1;
-                CourtName = "Quoc Tung",
+                CourtName = "Quốc Tùng",
                 HourStart = 5,
                 MinuteStart = 0,
                 HourEnd = 22,
@@ -649,6 +636,7 @@ public class Seeding
                 Gender = "",
                 Bank = "",
                 CardNumber = "",
+                Balance = 1000000,
                 RoleId = 2
             },
             new Account()
@@ -661,6 +649,7 @@ public class Seeding
                 Gender = "",
                 Bank = "",
                 CardNumber = "",
+                Balance = 1000000,
                 RoleId = 2
             },
             new Account()
@@ -673,6 +662,7 @@ public class Seeding
                 Gender = "",
                 Bank = "",
                 CardNumber = "",
+                Balance = 1000000,
                 RoleId = 2
             },
             new Account()
@@ -685,6 +675,7 @@ public class Seeding
                 Gender = "",
                 Bank = "",
                 CardNumber = "",
+                Balance = 1000000,
                 RoleId = 2
             },
             new Account()
@@ -697,6 +688,7 @@ public class Seeding
                 Gender = "",
                 Bank = "",
                 CardNumber = "",
+                Balance = 1000000,
                 RoleId = 3
             },
             new Account()
@@ -709,6 +701,7 @@ public class Seeding
                 Gender = "",
                 Bank = "",
                 CardNumber = "",
+                Balance = 1000000,
                 RoleId = 1
             },
             new Account()
@@ -721,6 +714,7 @@ public class Seeding
                 Gender = "",
                 Bank = "",
                 CardNumber = "",
+                Balance = 1000000,
                 RoleId = 2
             }
         };

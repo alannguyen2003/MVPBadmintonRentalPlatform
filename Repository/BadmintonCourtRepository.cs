@@ -35,4 +35,9 @@ public class BadmintonCourtRepository : IBadmintonCourtRepository
     {
         return await BadmintonCourtDAO.Instance.GetAllSlotsOfBadmintonCourt(badmintonCourt);
     }
+
+    public async Task<List<BadmintonCourt>> SearchBadmintonCourtByName(string search)
+    {
+        return await BadmintonCourtDAO.Instance.SearchBadmintonCourtByName(search);
+    }
 }

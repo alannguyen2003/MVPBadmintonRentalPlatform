@@ -10,5 +10,8 @@ public class BadmintonCourtResponse
     public float PricePerHour { get; set; }
     public float PriceAtWeekend { get; set; }
     public float PriceAtHoliday { get; set; }
+    public string Address { get; set; }
+    public string Owner { get; set; }
+    public string PhoneNumber { get; set; }
     public List<string> ServiceCourts { get; set; }
 }

@@ -1213,6 +1213,16 @@
           "bin/placeholder/DataAccess.dll": {}
         }
       },
+      "DataTransfer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/DataTransfer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DataTransfer.dll": {}
+        }
+      },
       "Repository/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
@@ -3615,6 +3625,11 @@
       "path": "../DataAccess/DataAccess.csproj",
       "msbuildProject": "../DataAccess/DataAccess.csproj"
     },
+    "DataTransfer/1.0.0": {
+      "type": "project",
+      "path": "../DataTransfer/DataTransfer.csproj",
+      "msbuildProject": "../DataTransfer/DataTransfer.csproj"
+    },
     "Repository/1.0.0": {
       "type": "project",
       "path": "../Repository/Repository.csproj",
@@ -3623,6 +3638,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "DataTransfer >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.0",
       "Repository >= 1.0.0"
     ]
@@ -3660,6 +3676,9 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
+            "E:\\Semester 8\\EXE201\\BadmintonRentalPlatform\\DataTransfer\\DataTransfer.csproj": {
+              "projectPath": "E:\\Semester 8\\EXE201\\BadmintonRentalPlatform\\DataTransfer\\DataTransfer.csproj"
+            },
             "E:\\Semester 8\\EXE201\\BadmintonRentalPlatform\\Repository\\Repository.csproj": {
               "projectPath": "E:\\Semester 8\\EXE201\\BadmintonRentalPlatform\\Repository\\Repository.csproj"
             }

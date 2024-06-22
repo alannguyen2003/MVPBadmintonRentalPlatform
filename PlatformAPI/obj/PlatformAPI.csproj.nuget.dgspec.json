@@ -427,6 +427,9 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
+              "E:\\Semester 8\\EXE201\\BadmintonRentalPlatform\\DataTransfer\\DataTransfer.csproj": {
+                "projectPath": "E:\\Semester 8\\EXE201\\BadmintonRentalPlatform\\DataTransfer\\DataTransfer.csproj"
+              },
               "E:\\Semester 8\\EXE201\\BadmintonRentalPlatform\\Repository\\Repository.csproj": {
                 "projectPath": "E:\\Semester 8\\EXE201\\BadmintonRentalPlatform\\Repository\\Repository.csproj"
               }

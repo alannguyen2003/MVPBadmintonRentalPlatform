@@ -7,11 +7,15 @@ public class Booking : BaseEntity
 {
     public int Price { get; set; }
     
+    [ForeignKey("BadmintonCourtId")]
+    public int BadmintonCourtId { get; set; }
+    public virtual BadmintonCourt BadmintonCourt { get; set; }
+    
     [ForeignKey("AccountId")]
     public int AccountId { get; set; }
     public virtual Account Account { get; set; }
     
-    [ForeignKey("PaymentMethodId")]
-    public int PaymentMethodId { get; set; }
-    public virtual PaymentMethod PaymentMethod { get; set; }
+    [ForeignKey("BookingStatusId")]
+    public int BookingStatusId { get; set; }
+    public virtual BookingStatus BookingStatus { get; set; }
 }

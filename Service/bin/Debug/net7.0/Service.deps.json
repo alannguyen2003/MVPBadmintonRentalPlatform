@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "Service/1.0.0": {
         "dependencies": {
+          "DataTransfer": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.0",
           "Repository": "1.0.0"
         },
@@ -621,6 +622,11 @@
           "DataAccess.dll": {}
         }
       },
+      "DataTransfer/1.0.0": {
+        "runtime": {
+          "DataTransfer.dll": {}
+        }
+      },
       "Repository/1.0.0": {
         "dependencies": {
           "DataAccess": "1.0.0"
@@ -1119,6 +1125,11 @@
       "sha512": ""
     },
     "DataAccess/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DataTransfer/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

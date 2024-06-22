@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240620015412_Initial")]
+    [Migration("20240622132658_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -32,6 +32,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Balance")
+                        .HasColumnType("int");
 
                     b.Property<string>("Bank")
                         .IsRequired()
@@ -168,7 +171,10 @@ namespace DataAccess.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentMethodId")
+                    b.Property<int>("BadmintonCourtId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BookingStatusId")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")
@@ -178,12 +184,14 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("PaymentMethodId");
+                    b.HasIndex("BadmintonCourtId");
+
+                    b.HasIndex("BookingStatusId");
 
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("BusinessObject.BookingSlot", b =>
+            modelBuilder.Entity("BusinessObject.BookingDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,16 +202,33 @@ namespace DataAccess.Migrations
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SlotId")
+                    b.Property<int>("CourtId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookingId");
 
-                    b.HasIndex("SlotId");
+                    b.HasIndex("CourtId");
 
-                    b.ToTable("BookingSlot");
+                    b.ToTable("BookingDetail");
+                });
+
+            modelBuilder.Entity("BusinessObject.BookingStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookingStatus");
                 });
 
             modelBuilder.Entity("BusinessObject.Court", b =>
@@ -226,28 +251,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("BadmintonCourtId");
 
                     b.ToTable("Courts");
-                });
-
-            modelBuilder.Entity("BusinessObject.PaymentMethod", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BankId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BankId");
-
-                    b.ToTable("PaymentMethods");
                 });
 
             modelBuilder.Entity("BusinessObject.Role", b =>
@@ -297,26 +300,113 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BookingDetailId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CourtId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HourEnd")
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SlotStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HourStart")
+                    b.Property<string>("TimeFrame")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingDetailId");
+
+                    b.HasIndex("CourtId");
+
+                    b.HasIndex("SlotStatusId");
+
+                    b.ToTable("Slots");
+                });
+
+            modelBuilder.Entity("BusinessObject.SlotStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("MinuteEnd")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SlotStatus");
+                });
+
+            modelBuilder.Entity("BusinessObject.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("MinuteStart")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourtId");
+                    b.HasIndex("AccountId");
 
-                    b.ToTable("Slots");
+                    b.HasIndex("TransactionStatusId");
+
+                    b.HasIndex("TransactionTypeId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("BusinessObject.TransactionStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionStatus");
+                });
+
+            modelBuilder.Entity("BusinessObject.TransactionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("TypeOfTransaction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionTypes");
                 });
 
             modelBuilder.Entity("BusinessObject.Account", b =>
@@ -349,18 +439,26 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessObject.PaymentMethod", "PaymentMethod")
-                        .WithMany("Bookings")
-                        .HasForeignKey("PaymentMethodId")
+                    b.HasOne("BusinessObject.BadmintonCourt", "BadmintonCourt")
+                        .WithMany()
+                        .HasForeignKey("BadmintonCourtId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusinessObject.BookingStatus", "BookingStatus")
+                        .WithMany()
+                        .HasForeignKey("BookingStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
 
-                    b.Navigation("PaymentMethod");
+                    b.Navigation("BadmintonCourt");
+
+                    b.Navigation("BookingStatus");
                 });
 
-            modelBuilder.Entity("BusinessObject.BookingSlot", b =>
+            modelBuilder.Entity("BusinessObject.BookingDetail", b =>
                 {
                     b.HasOne("BusinessObject.Booking", "Booking")
                         .WithMany()
@@ -368,15 +466,15 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessObject.Slot", "Slot")
+                    b.HasOne("BusinessObject.Court", "Court")
                         .WithMany()
-                        .HasForeignKey("SlotId")
+                        .HasForeignKey("CourtId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Booking");
 
-                    b.Navigation("Slot");
+                    b.Navigation("Court");
                 });
 
             modelBuilder.Entity("BusinessObject.Court", b =>
@@ -388,17 +486,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("BadmintonCourt");
-                });
-
-            modelBuilder.Entity("BusinessObject.PaymentMethod", b =>
-                {
-                    b.HasOne("BusinessObject.Bank", "Bank")
-                        .WithMany()
-                        .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bank");
                 });
 
             modelBuilder.Entity("BusinessObject.ServiceCourt", b =>
@@ -414,23 +501,61 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("BusinessObject.Slot", b =>
                 {
+                    b.HasOne("BusinessObject.BookingDetail", "BookingDetail")
+                        .WithMany()
+                        .HasForeignKey("BookingDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BusinessObject.Court", "Court")
                         .WithMany()
                         .HasForeignKey("CourtId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BusinessObject.SlotStatus", "SlotStatus")
+                        .WithMany()
+                        .HasForeignKey("SlotStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BookingDetail");
+
                     b.Navigation("Court");
+
+                    b.Navigation("SlotStatus");
+                });
+
+            modelBuilder.Entity("BusinessObject.Transaction", b =>
+                {
+                    b.HasOne("BusinessObject.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusinessObject.TransactionStatus", "TransactionStatus")
+                        .WithMany()
+                        .HasForeignKey("TransactionStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusinessObject.TransactionType", "TransactionType")
+                        .WithMany()
+                        .HasForeignKey("TransactionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("TransactionStatus");
+
+                    b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("BusinessObject.BadmintonCourt", b =>
                 {
                     b.Navigation("Services");
-                });
-
-            modelBuilder.Entity("BusinessObject.PaymentMethod", b =>
-                {
-                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

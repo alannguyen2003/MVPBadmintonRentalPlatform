@@ -24,7 +24,7 @@ public class BadmintonCourtDAO
             return instance;
         }
     }
-
+    
     public async Task<List<BadmintonCourt>> GetAllBadmintonCourts()
     {
         return await _context.BadmintonCourts
@@ -68,5 +68,12 @@ public class BadmintonCourtDAO
                 .ToListAsync());
         }
         return slots;
+    }
+
+    public async Task<List<BadmintonCourt>> SearchBadmintonCourtByName(string search)
+    {
+        return await _context.BadmintonCourts
+            .Where(court => court.CourtName.ToUpper().Contains(search.ToUpper()))
+            .ToListAsync();
     }
 }

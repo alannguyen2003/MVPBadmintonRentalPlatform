@@ -31,4 +31,9 @@ public class CourtService : ICourtService
     {
         await _courtRepository.AddRangeCourts(courts);
     }
+
+    public async Task<Court?> GetCourt(int courtId)
+    {
+        return await _courtRepository.GetCourt(courtId);
+    }
 }

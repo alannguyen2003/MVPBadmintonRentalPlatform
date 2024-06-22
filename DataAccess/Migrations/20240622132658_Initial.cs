@@ -28,6 +28,19 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BookingStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookingStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -41,23 +54,42 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentMethods",
+                name: "SlotStatus",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PaymentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BankId = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PaymentMethods", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PaymentMethods_Banks_BankId",
-                        column: x => x.BankId,
-                        principalTable: "Banks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_SlotStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransactionStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransactionTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeOfTransaction = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,6 +106,7 @@ namespace DataAccess.Migrations
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Bank = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Balance = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -118,14 +151,49 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    TransactionTypeId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    TransactionStatusId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transactions_TransactionStatus_TransactionStatusId",
+                        column: x => x.TransactionStatusId,
+                        principalTable: "TransactionStatus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transactions_TransactionTypes_TransactionTypeId",
+                        column: x => x.TransactionTypeId,
+                        principalTable: "TransactionTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bookings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Price = table.Column<int>(type: "int", nullable: false),
+                    BadmintonCourtId = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<int>(type: "int", nullable: false),
-                    PaymentMethodId = table.Column<int>(type: "int", nullable: false)
+                    BookingStatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,9 +205,15 @@ namespace DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bookings_PaymentMethods_PaymentMethodId",
-                        column: x => x.PaymentMethodId,
-                        principalTable: "PaymentMethods",
+                        name: "FK_Bookings_BadmintonCourts_BadmintonCourtId",
+                        column: x => x.BadmintonCourtId,
+                        principalTable: "BadmintonCourts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Bookings_BookingStatus_BookingStatusId",
+                        column: x => x.BookingStatusId,
+                        principalTable: "BookingStatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -185,52 +259,64 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Slots",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    HourStart = table.Column<int>(type: "int", nullable: false),
-                    MinuteStart = table.Column<int>(type: "int", nullable: false),
-                    HourEnd = table.Column<int>(type: "int", nullable: false),
-                    MinuteEnd = table.Column<int>(type: "int", nullable: false),
-                    CourtId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Slots", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Slots_Courts_CourtId",
-                        column: x => x.CourtId,
-                        principalTable: "Courts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BookingSlot",
+                name: "BookingDetail",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookingId = table.Column<int>(type: "int", nullable: false),
-                    SlotId = table.Column<int>(type: "int", nullable: false)
+                    CourtId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookingSlot", x => x.Id);
+                    table.PrimaryKey("PK_BookingDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookingSlot_Bookings_BookingId",
+                        name: "FK_BookingDetail_Bookings_BookingId",
                         column: x => x.BookingId,
                         principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookingSlot_Slots_SlotId",
-                        column: x => x.SlotId,
-                        principalTable: "Slots",
+                        name: "FK_BookingDetail_Courts_CourtId",
+                        column: x => x.CourtId,
+                        principalTable: "Courts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Slots",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TimeFrame = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SlotStatusId = table.Column<int>(type: "int", nullable: false),
+                    CourtId = table.Column<int>(type: "int", nullable: false),
+                    BookingDetailId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Slots", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Slots_BookingDetail_BookingDetailId",
+                        column: x => x.BookingDetailId,
+                        principalTable: "BookingDetail",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Slots_Courts_CourtId",
+                        column: x => x.CourtId,
+                        principalTable: "Courts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Slots_SlotStatus_SlotStatusId",
+                        column: x => x.SlotStatusId,
+                        principalTable: "SlotStatus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -244,24 +330,29 @@ namespace DataAccess.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BookingDetail_BookingId",
+                table: "BookingDetail",
+                column: "BookingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookingDetail_CourtId",
+                table: "BookingDetail",
+                column: "CourtId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bookings_AccountId",
                 table: "Bookings",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_PaymentMethodId",
+                name: "IX_Bookings_BadmintonCourtId",
                 table: "Bookings",
-                column: "PaymentMethodId");
+                column: "BadmintonCourtId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingSlot_BookingId",
-                table: "BookingSlot",
-                column: "BookingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingSlot_SlotId",
-                table: "BookingSlot",
-                column: "SlotId");
+                name: "IX_Bookings_BookingStatusId",
+                table: "Bookings",
+                column: "BookingStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Courts_BadmintonCourtId",
@@ -269,44 +360,76 @@ namespace DataAccess.Migrations
                 column: "BadmintonCourtId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PaymentMethods_BankId",
-                table: "PaymentMethods",
-                column: "BankId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Services_BadmintonCourtId",
                 table: "Services",
                 column: "BadmintonCourtId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Slots_BookingDetailId",
+                table: "Slots",
+                column: "BookingDetailId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Slots_CourtId",
                 table: "Slots",
                 column: "CourtId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Slots_SlotStatusId",
+                table: "Slots",
+                column: "SlotStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_AccountId",
+                table: "Transactions",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_TransactionStatusId",
+                table: "Transactions",
+                column: "TransactionStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_TransactionTypeId",
+                table: "Transactions",
+                column: "TransactionTypeId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BookingSlot");
+                name: "Banks");
 
             migrationBuilder.DropTable(
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "Bookings");
-
-            migrationBuilder.DropTable(
                 name: "Slots");
 
             migrationBuilder.DropTable(
-                name: "PaymentMethods");
+                name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "BookingDetail");
+
+            migrationBuilder.DropTable(
+                name: "SlotStatus");
+
+            migrationBuilder.DropTable(
+                name: "TransactionStatus");
+
+            migrationBuilder.DropTable(
+                name: "TransactionTypes");
+
+            migrationBuilder.DropTable(
+                name: "Bookings");
 
             migrationBuilder.DropTable(
                 name: "Courts");
 
             migrationBuilder.DropTable(
-                name: "Banks");
+                name: "BookingStatus");
 
             migrationBuilder.DropTable(
                 name: "BadmintonCourts");

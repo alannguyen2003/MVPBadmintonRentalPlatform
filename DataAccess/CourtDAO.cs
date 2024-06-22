@@ -51,4 +51,10 @@ public class CourtDAO
         await _context.Courts.AddRangeAsync(courts);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<Court?> GetCourt(int courtId)
+    {
+        return await _context.Courts
+            .FindAsync(courtId);
+    }
 }

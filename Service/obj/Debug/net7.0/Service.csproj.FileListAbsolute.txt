@@ -17,3 +17,5 @@ E:\Semester 8\EXE201\BadmintonRentalPlatform\Service\obj\Debug\net7.0\Service.dl
 E:\Semester 8\EXE201\BadmintonRentalPlatform\Service\obj\Debug\net7.0\refint\Service.dll
 E:\Semester 8\EXE201\BadmintonRentalPlatform\Service\obj\Debug\net7.0\Service.pdb
 E:\Semester 8\EXE201\BadmintonRentalPlatform\Service\obj\Debug\net7.0\ref\Service.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Service\bin\Debug\net7.0\DataTransfer.dll
+E:\Semester 8\EXE201\BadmintonRentalPlatform\Service\bin\Debug\net7.0\DataTransfer.pdb

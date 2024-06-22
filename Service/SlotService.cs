@@ -27,13 +27,4 @@ public class SlotService : ISlotService
     {
         return await _slotRepository.GetAllSlotsWithBadmintonCourt(badmintonCourtId);
     }
-
-    public async Task AddRangeSlotsForBadmintonCourt(int hourStart, int minuteStart, int hourEnd, int minuteEnd,
-        int courtId)
-    {
-        await _slotRepository.AddRangeSlotsForBadmintonCourt(new TimeSpan(hourStart, minuteStart, 0),
-            new TimeSpan(hourEnd, minuteEnd, 0),
-            new TimeSpan(0, 30, 0),
-            courtId);
-    }
 }
