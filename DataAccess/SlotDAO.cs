@@ -75,4 +75,23 @@ public class SlotDAO
             minutes.Add(currentSlotStartTime.Minutes);
         }
     }
+
+    public async Task AddNewSlot(Slot slot)
+    {
+        await _context.Slots.AddAsync(slot);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task AddRangeSlot(List<Slot> slots)
+    {
+        await _context.Slots.AddRangeAsync(slots);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<Slot>> GetSlotByDateTime(DateTime date)
+    {
+        return await _context.Slots
+            .Where(slot => slot.DateTime.Date.Equals(date.Date))
+            .ToListAsync();
+    }
 }

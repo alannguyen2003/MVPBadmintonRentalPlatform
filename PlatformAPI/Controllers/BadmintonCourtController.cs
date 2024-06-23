@@ -232,7 +232,7 @@ public class BadmintonCourtController : ControllerBase
             {
                 CourtId = badmintonCourtId,
                 CourtName = badmintonCourt.CourtName,
-                GenerateSlotResponse = await _utilization.GenerateSlotForBadmintonCourtWithCourt(badmintonCourt.Id, courtId)
+                GenerateSlotResponse = await _utilization.GenerateSlotForBadmintonCourtWithCourt(badmintonCourt.Id, courtId, date)
             }
         });
     }

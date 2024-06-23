@@ -30,10 +30,11 @@ public class BookingDAO
         return await _context.Bookings.ToListAsync();
     }
 
-    public async Task AddNewBooking(Booking booking)
+    public async Task<Booking?> AddNewBooking(Booking booking)
     {
         await _context.Bookings.AddAsync(booking);
         await _context.SaveChangesAsync();
+        return booking;
     }
 
     public async Task<List<Booking>> GetBookingWithPlayerId(int playerId)

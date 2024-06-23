@@ -9,6 +9,7 @@ using DataTransfer.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using Service.Interface;
 
 namespace PlatformAPI.Controllers;
@@ -19,11 +20,14 @@ public class TransactionController : ControllerBase
 {
     private readonly ITransactionService _transactionService;
     private readonly IMapper _mapper;
+    private readonly IAccountService _accountService;
 
-    public TransactionController(ITransactionService transactionService, IMapper mapper)
+    public TransactionController(ITransactionService transactionService, IMapper mapper,
+        IAccountService accountService)
     {
         _transactionService = transactionService;
         _mapper = mapper;
+        _accountService = accountService;
     }
 
     [HttpGet("get-all")]
@@ -187,6 +191,90 @@ public class TransactionController : ControllerBase
     
     [HttpPost("reject-transaction")]
     public async Task<IActionResult> RejectTransaction(int transactionId)
+    {
+        try
+        {
+            var transaction = await _transactionService.GetTransaction(transactionId);
+            if (transaction != null)
+            {
+                await _transactionService.RejectTransaction(transaction);
+                return Ok(new ApiResponse()
+                {
+                    StatusCode = 200,
+                    Message = "Approve transaction succesful!"
+                });
+            }
+            else throw new Exception();
+        }
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "Error in approve transaction: " + ex.InnerException
+            });
+        }
+    }
+
+    [HttpPost("add-money")]
+    public async Task<IActionResult> AddMoneyForAccount(int accountId, int money)
+    {
+        try
+        {
+            var account = await _accountService.GetAccount(accountId);
+            account.Balance += money;
+            await _accountService.EditProfileAsync(account);
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Add money for account successful!",
+                Data = account
+            });
+        }
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "Error in add money: " + ex.InnerException
+            });
+        }
+    }
+
+    [HttpPost("cash-out-request")]
+    [Authorize]
+    public async Task<IActionResult> CashOutRequest(int money)
+    {
+        try
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userId = identity.FindFirst("UserId").Value;
+            var transaction = new Transaction()
+            {
+                AccountId = Int32.Parse(userId),
+                TransactionTypeId = 2,
+                TransactionStatusId = 1,
+                Amount = money
+            };
+            await _transactionService.AddNewTransaction(transaction);
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Add new transaction successful!"
+            });
+        }
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "Error in cash out request: " + ex.InnerException
+            });
+        }
+    }
+
+    [HttpGet("approve-cash-out-request")]
+    public async Task<IActionResult> ApproveCashOutRequest(int transactionId)
     {
         try
         {

@@ -27,4 +27,19 @@ public class SlotService : ISlotService
     {
         return await _slotRepository.GetAllSlotsWithBadmintonCourt(badmintonCourtId);
     }
+
+    public async Task AddNewSlot(Slot slot)
+    {
+        await _slotRepository.AddNewSlot(slot);
+    }
+
+    public async Task AddRangeSlot(List<Slot> slots)
+    {
+        await _slotRepository.AddRangeSlot(slots);
+    }
+
+    public async Task<List<Slot>> GetSlotByDate(DateTime date)
+    {
+        return await _slotRepository.GetSlotsWithDate(date);
+    }
 }

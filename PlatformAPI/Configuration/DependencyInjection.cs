@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<ISlotStatusRepository, SlotStatusRepository>();
         services.AddScoped<ITransactionRepository, TransactionRepository>();
         services.AddScoped<ITransactionStatusRepository, TransactionStatusRepository>();
+        services.AddScoped<IBookingDetailRepository, BookingDetailRepository>();
         return services;
     }
 
@@ -49,6 +50,7 @@ public static class DependencyInjection
         services.AddScoped<ITransactionTypeService, TransactionTypeService>();
         services.AddScoped<ITransactionService, TransactionService>();
         services.AddScoped<ITransactionStatusService, TransactionStatusService>();
+        services.AddScoped<IBookingDetailService, BookingDetailService>();
         return services;
     }
 

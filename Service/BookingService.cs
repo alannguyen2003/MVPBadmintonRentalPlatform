@@ -18,9 +18,9 @@ public class BookingService : IBookingService
         return await _bookingRepository.GetAllBookings();
     }
 
-    public async Task AddNewBookingAsync(Booking booking)
+    public async Task<Booking?> AddNewBookingAsync(Booking booking)
     {
-        await _bookingRepository.AddNewBookingAsync(booking);
+        return await _bookingRepository.AddNewBookingAsync(booking);
     }
 
     public async Task<List<Booking>> GetBookingsWithPlayerId(int playerId)

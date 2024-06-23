@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using BusinessObject;
 using DataTransfer;
 using DataTransfer.Request;
 using DataTransfer.Response;
@@ -15,14 +16,21 @@ public class BookingController : ControllerBase
 {
     private readonly IBookingService _bookingService;
     private readonly IAccountService _accountService;
+    private readonly ITransactionService _transactionService;
     private readonly IMapper _mapper;
+    private readonly ISlotService _slotService;
+    private readonly IBookingDetailService _bookingDetailService;
 
     public BookingController(IBookingService bookingService, IAccountService accountService,
-        IMapper mapper)
+        IMapper mapper, ITransactionService transactionService, ISlotService slotService,
+        IBookingDetailService bookingDetailService)
     {
         _bookingService = bookingService;
         _accountService = accountService;
         _mapper = mapper;
+        _transactionService = transactionService;
+        _slotService = slotService;
+        _bookingDetailService = bookingDetailService;
     }
 
     [HttpGet("get-all-bookings")]
@@ -57,10 +65,55 @@ public class BookingController : ControllerBase
     [Authorize]
     public async Task<IActionResult> CreateBookingForPlayer(CreateBookingRequest request)
     {
-        var identity = HttpContext.User.Identity as ClaimsIdentity;
-        var userId = identity.FindFirst("UserId").Value;
-        var account = await _accountService.GetAccount(Int32.Parse(userId));
-        return Ok(account);
+        try
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userId = identity.FindFirst("UserId").Value;
+            var account = await _accountService.GetAccount(Int32.Parse(userId));
+            var booking = await _bookingService.AddNewBookingAsync(new Booking()
+            {
+                Price = request.PriceTotal,
+                AccountId = Int32.Parse(userId),
+                BadmintonCourtId = request.BadmintonCourtId,
+                BookingStatusId = 1
+            });
+            List<Slot> slots = new List<Slot>();
+            foreach (var item in request.CreateBookingSlotRequests)
+            {
+                var bookingDetail = await _bookingDetailService.AddNewBookingDetails(new BookingDetail()
+                {
+                    CourtId = item.CourtId,
+                    BookingId = booking.Id
+                });
+                foreach (var slot in item.TimeFrames)
+                {
+                    slots.Add(new Slot()
+                    {
+                        CourtId = item.CourtId,
+                        SlotStatusId = 1,
+                        TimeFrame = slot.TimeFrame,
+                        BookingDetailId = bookingDetail.Id,
+                        DateTime = item.Date
+                    });
+                }
+                await _slotService.AddRangeSlot(slots);
+            }
+
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Booking successful!",
+                Data = booking
+            });
+        }
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "error" + ex.InnerException
+            });
+        }
     }
 
 }

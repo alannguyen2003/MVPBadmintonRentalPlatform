@@ -9,8 +9,10 @@ public class Utilization
 {
     private readonly IBadmintonCourtService _badmintonCourtService;
     private readonly ICourtService _courtService;
+    private readonly ISlotService _slotService;
 
-    public Utilization(IBadmintonCourtService badmintonCourtService, ICourtService courtService)
+    public Utilization(IBadmintonCourtService badmintonCourtService, ICourtService courtService,
+        ISlotService slotService)
     {
         _badmintonCourtService = badmintonCourtService;
         _courtService = courtService;
@@ -26,7 +28,7 @@ public class Utilization
             {
                 Id = courts[i].Id,
                 CourtCode = courts[i].CourtCode,
-                TimeFrame = new List<string>()
+                SlotWithStatusResponses = new List<SlotWithStatusResponse>()
             };
             List<int> hours = new List<int>();
             List<int> minutes = new List<int>();
@@ -38,23 +40,28 @@ public class Utilization
             {
                 var minuteStart = minutes[j] == 0 ? "00" : "" + minutes[j];
                 var minuteEnd = minutes[j+1] == 0 ? "00" : "" + minutes[j+1];
-                slot.TimeFrame.Add( hours[j] + ":" + minuteStart + " - " +
-                                    hours[j+1] + ":" + minuteEnd);
+                slot.SlotWithStatusResponses.Add(new SlotWithStatusResponse()
+                {
+                    TimeFrame = hours[j] + ":" + minuteStart + " - " +
+                                hours[j+1] + ":" + minuteEnd,
+                    IsBooked = false
+                });
             }
             listSlot.Add(slot);
         }
         return listSlot;
     }
 
-    public async Task<GenerateSlotResponse> GenerateSlotForBadmintonCourtWithCourt(int badmintonCourtId, int courtId)
+    public async Task<GenerateSlotResponse> GenerateSlotForBadmintonCourtWithCourt(int badmintonCourtId, int courtId, DateTime date)
     {
         var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(badmintonCourtId);
         var court = await _courtService.GetCourt(courtId);  
+        var slots = await _slotService.GetSlotByDate(date);
         var slot = new GenerateSlotResponse()
         {
             Id = court!.Id,
             CourtCode = court.CourtCode,
-            TimeFrame = new List<string>()
+            SlotWithStatusResponses = new List<SlotWithStatusResponse>()
         };
         List<int> hours = new List<int>();
         List<int> minutes = new List<int>();
@@ -66,10 +73,16 @@ public class Utilization
         {
             var minuteStart = minutes[i] == 0 ? "00" : "" + minutes[i];
             var minuteEnd = minutes[i+1] == 0 ? "00" : "" + minutes[i+1];
-            slot.TimeFrame.Add( hours[i] + ":" + minuteStart + " - " +
-                                hours[i+1] + ":" + minuteEnd);
+            var timeFrame = hours[i] + ":" + minuteStart + " - " +
+                            hours[i + 1] + ":" + minuteEnd;
+            
+            slot.SlotWithStatusResponses.Add(new SlotWithStatusResponse()
+            {
+                TimeFrame = timeFrame,
+                IsBooked = false
+            });
         }
-
+        
         return slot;
     }
 }
