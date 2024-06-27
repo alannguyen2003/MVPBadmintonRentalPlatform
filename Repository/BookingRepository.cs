@@ -62,4 +62,15 @@ public class BookingRepository : IBookingRepository
     {
         return await BookingDAO.Instance.GetAllBookingAfterNow(userId);
     }
+
+    public async Task<int> GetRevenueByDateAndBadmintonCourtId(int badmintonCourtId, DateTime date)
+    {
+        var bookings = await BookingDAO.Instance.GetBookingsByDateAndBadmintonCourtId(badmintonCourtId, date);
+        int revenue = 0;
+        foreach (var item in bookings)
+        {
+            revenue += item.Price;
+        }
+        return revenue;
+    }
 }

@@ -69,4 +69,13 @@ public class BookingDAO
             .Where(booking => booking.DateTime > DateTime.Now && booking.AccountId == userId && booking.BookingStatusId != 4)
             .ToListAsync();
     }
+
+    public async Task<List<Booking>> GetBookingsByDateAndBadmintonCourtId(int badmintonCourtId, DateTime date)
+    {
+        return await _context.Bookings
+            .Where(booking => booking.BadmintonCourtId == badmintonCourtId &&
+                              booking.DateTime.Date.Equals(date.Date) &&
+                              booking.BookingStatusId == 2)
+            .ToListAsync();
+    } 
 }

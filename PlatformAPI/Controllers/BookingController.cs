@@ -75,7 +75,7 @@ public class BookingController : ControllerBase
                 Price = request.PriceTotal,
                 AccountId = Int32.Parse(userId),
                 BadmintonCourtId = request.BadmintonCourtId,
-                BookingStatusId = 1,
+                BookingStatusId = 2,
                 DateTime = request.CreateBookingSlotRequests[0].Date
             });
             await _transactionService.AddNewTransaction(new Transaction()

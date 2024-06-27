@@ -12,4 +12,5 @@ public interface IBookingRepository
     public Task<List<BookingDetail>> GetBookingDetails(int bookingId);
     public Task<List<Booking>> GetAllBookingsBeforeNow(int userId);
     public Task<List<Booking>> GetAllBookingAfterNow(int userId);
+    public Task<int> GetRevenueByDateAndBadmintonCourtId(int badmintonCourtId, DateTime date);
 }

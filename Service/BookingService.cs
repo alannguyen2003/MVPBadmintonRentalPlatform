@@ -52,4 +52,9 @@ public class BookingService : IBookingService
     {
         return await _bookingRepository.GetAllBookingAfterNow(userId);
     }
+
+    public async Task<int> GetRevenueByBadmintonCourtIdAndDate(int badmintonCourtId, DateTime date)
+    {
+        return await _bookingRepository.GetRevenueByDateAndBadmintonCourtId(badmintonCourtId, date);
+    }
 }
