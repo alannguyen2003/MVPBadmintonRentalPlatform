@@ -77,6 +77,13 @@ public class BookingController : ControllerBase
                 BadmintonCourtId = request.BadmintonCourtId,
                 BookingStatusId = 1
             });
+            await _transactionService.AddNewTransaction(new Transaction()
+            {
+                AccountId = Int32.Parse(userId),
+                TransactionStatusId = 2,
+                TransactionTypeId = 3,
+                Amount = booking.Price
+            });
             List<Slot> slots = new List<Slot>();
             foreach (var item in request.CreateBookingSlotRequests)
             {

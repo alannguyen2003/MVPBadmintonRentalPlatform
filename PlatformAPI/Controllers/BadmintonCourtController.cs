@@ -214,7 +214,7 @@ public class BadmintonCourtController : ControllerBase
             {
                 CourtId = badmintonCourtId,
                 CourtName = badmintonCourt.CourtName,
-                GenerateSlotResponses = await _utilization.GenerateSlotResponseForBadmintonCourt(badmintonCourt.Id)
+                GenerateSlotResponses = await _utilization.GenerateSlotResponseForBadmintonCourt(badmintonCourtId)
             }
         });
     }
@@ -232,11 +232,8 @@ public class BadmintonCourtController : ControllerBase
             {
                 CourtId = badmintonCourtId,
                 CourtName = badmintonCourt.CourtName,
-                GenerateSlotResponse = await _utilization.GenerateSlotForBadmintonCourtWithCourt(badmintonCourt.Id, courtId, date)
+                GenerateSlotResponse = await _utilization.GenerateSlotForBadmintonCourtWithCourt(badmintonCourtId, courtId, date)
             }
         });
-    }
-
-    
-    
+    } 
 }

@@ -16,7 +16,7 @@ public class BookingRepository : IBookingRepository
         try
         {
             var account = await AccountDAO.Instance.GetAccount(booking.AccountId);
-            if (account.Balance < booking.Price)
+            if (account.Balance >= booking.Price)
             {
                 account.Balance -= booking.Price;
             }

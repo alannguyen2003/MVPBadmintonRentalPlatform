@@ -83,4 +83,25 @@ public class SlotController : ControllerBase
             Message = "No record found!"
         });
     }
+
+    [HttpGet("get-all-with-date")]
+    public async Task<IActionResult> GetAllSlotsWithDate(DateTime date)
+    {
+        var slots = await _slotService.GetSlotByDate(date);
+        if (slots.Any())
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Get slots by date successful!",
+                Data = slots
+            });
+        }
+
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "No record found!"
+        });
+    }
 }

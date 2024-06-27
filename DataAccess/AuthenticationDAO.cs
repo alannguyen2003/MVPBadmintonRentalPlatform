@@ -36,6 +36,17 @@ public class AuthenticationDAO
             item.BadmintonCourtId = badmintonCourt.Id;
         }
         await ServiceCourtDAO.Instance.AddRangeServiceCourt(services);
+        List<Court> courts = new List<Court>();
+        for (int i = 1; i <= badmintonCourt.NumberOfCourt; i++)
+        {
+            courts.Add(new Court()
+            {
+                BadmintonCourtId = badmintonCourt.Id,
+                CourtCode = i.ToString()
+            });
+        }
+
+        await CourtDAO.Instance.AddRangeCourts(courts);
         return account;
     }
 
