@@ -231,11 +231,12 @@ public class Utilization
                     break;
                 }
             }
-            var bookingDetail = await _bookingDetailService.GetBookingDetailById(bookingDetailId);
-            var booking = await _bookingService.GetBookingWithId(bookingDetail.BookingId);
-            var account = await _accountService.GetAccount(booking.AccountId);
+            
             if (isBooked)
             {
+                var bookingDetail = await _bookingDetailService.GetBookingDetailById(bookingDetailId);
+                var booking = await _bookingService.GetBookingWithId(bookingDetail.BookingId);
+                var account = await _accountService.GetAccount(booking.AccountId);
                 slot.SlotWithStatusResponsesForOwner.Add(new SlotWithStatusResponseForOwner()
                 {
                     TimeFrame = timeFrame,
