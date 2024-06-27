@@ -38,4 +38,28 @@ public class BookingRepository : IBookingRepository
     {
         return await BookingDAO.Instance.GetBookingWithId(bookingId);
     }
+
+    public async Task UpdateBooking(Booking booking)
+    {
+        booking.BookingStatusId = 4;
+        var user = await AccountDAO.Instance.GetAccount(booking.AccountId);
+        user.Balance += booking.Price;
+        await AccountDAO.Instance.EditProfile(user);
+        await BookingDAO.Instance.UpdateBooking(booking);
+    }
+
+    public async Task<List<BookingDetail>> GetBookingDetails(int bookingId)
+    {
+        return await BookingDetailDAO.Instance.GetAllBookingDetailsWithBookingId(bookingId);
+    }
+
+    public async Task<List<Booking>> GetAllBookingsBeforeNow(int userId)
+    {
+        return await BookingDAO.Instance.GetAllBookingBeforeNow(userId);
+    }
+
+    public async Task<List<Booking>> GetAllBookingAfterNow(int userId)
+    {
+        return await BookingDAO.Instance.GetAllBookingAfterNow(userId);
+    }
 }

@@ -14,4 +14,6 @@ public interface IAccountService
     public Task<List<Account>> GetAllAccounts();
     public Task<List<Account>> GetAccountWithRole(int roleId);
     public Task EditProfileAsync(Account account);
+    public Task<int> GetNumberOfPlayer();
+    public Task<int> GetNumberOfOwner();
 }

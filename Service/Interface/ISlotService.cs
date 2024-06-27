@@ -10,4 +10,5 @@ public interface ISlotService
     public Task AddNewSlot(Slot slot);
     public Task AddRangeSlot(List<Slot> slots);
     public Task<List<Slot>> GetSlotByDate(DateTime date);
+    public Task<List<Slot>> GetAllSlotsByBookingDetail(int bookingDetailId);
 }

@@ -91,7 +91,14 @@ public class SlotDAO
     public async Task<List<Slot>> GetSlotByDateTime(DateTime date)
     {
         return await _context.Slots
-            .Where(slot => slot.DateTime.Date.Equals(date.Date))
+            .Where(slot => slot.DateTime.Date == date.Date)
+            .ToListAsync();
+    }
+
+    public async Task<List<Slot>> GetAllSlotByBookingDetails(int bookingDetailId)
+    {
+        return await _context.Slots
+            .Where(slot => slot.BookingDetailId == bookingDetailId)
             .ToListAsync();
     }
 }

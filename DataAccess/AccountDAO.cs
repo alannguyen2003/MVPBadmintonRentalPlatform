@@ -86,4 +86,16 @@ public class AccountDAO
         _context.Attach(account).State = EntityState.Modified;
         await _context.SaveChangesAsync();
     }
+
+    public async Task<int> GetNumberOfPlayer()
+    {
+        return await _context.Accounts
+            .CountAsync(account => account.RoleId == 1);
+    }
+
+    public async Task<int> GetNumberOfOwner()
+    {
+        return await _context.Accounts
+            .CountAsync(account => account.RoleId == 2);
+    }
 }

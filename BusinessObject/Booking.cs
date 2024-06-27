@@ -18,4 +18,6 @@ public class Booking : BaseEntity
     [ForeignKey("BookingStatusId")]
     public int BookingStatusId { get; set; }
     public virtual BookingStatus BookingStatus { get; set; }
+    
+    public DateTime DateTime { get; set; }
 }

@@ -86,4 +86,14 @@ public class AccountService : IAccountService
     {
         await _accountRepository.EditProfileAsync(account);
     }
+
+    public async Task<int> GetNumberOfPlayer()
+    {
+        return await _accountRepository.GetNumberOfPlayer();
+    }
+
+    public async Task<int> GetNumberOfOwner()
+    {
+        return await _accountRepository.GetNumberOfOwner();
+    }
 }

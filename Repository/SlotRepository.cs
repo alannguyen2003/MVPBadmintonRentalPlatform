@@ -35,4 +35,9 @@ public class SlotRepository : ISlotRepository
     {
         return await SlotDAO.Instance.GetSlotByDateTime(date);
     }
+
+    public async Task<List<Slot>> GetSlotByBookingDetails(int bookingDetailId)
+    {
+        return await SlotDAO.Instance.GetAllSlotByBookingDetails(bookingDetailId);
+    }
 }

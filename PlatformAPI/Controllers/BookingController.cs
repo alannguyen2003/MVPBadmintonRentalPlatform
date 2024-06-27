@@ -75,7 +75,8 @@ public class BookingController : ControllerBase
                 Price = request.PriceTotal,
                 AccountId = Int32.Parse(userId),
                 BadmintonCourtId = request.BadmintonCourtId,
-                BookingStatusId = 1
+                BookingStatusId = 1,
+                DateTime = request.CreateBookingSlotRequests[0].Date
             });
             await _transactionService.AddNewTransaction(new Transaction()
             {
@@ -119,9 +120,155 @@ public class BookingController : ControllerBase
             return Ok(new ApiResponse()
             {
                 StatusCode = 400,
-                Message = "error" + ex.InnerException
+                Message = "error" + ex.Message
             });
         }
+    }
+
+    [HttpGet("get-all-by-user")]
+    [Authorize]
+    public async Task<IActionResult> GetAllByPlayerId()
+    {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        int userId = Int32.Parse(identity.FindFirst("UserId").Value);
+        var bookings = await _bookingService.GetBookingsWithPlayerId(userId);
+        if (bookings.Any())
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Get bookings by player's id successful!",
+                Data = bookings
+            });
+        }
+
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "No record found!",
+            Data = null
+        });
+    }
+
+    [HttpGet("cancel-booking")]
+    public async Task<IActionResult> CancelBooking(int bookingId)
+    {
+        try
+        {
+            var booking = await _bookingService.GetBookingWithId(bookingId);
+            await _bookingService.CancelBooking(booking);
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Cancel booking successful!",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "Error in cancel: " + ex.InnerException
+            });
+        }
+    }
+
+    [HttpGet("get-booking-detail")]
+    public async Task<IActionResult> GetAllBookingDetailsWithBookingId(int bookingId)
+    {
+        var bookingDetails = await _bookingService.GetBookingDetails(bookingId);
+        var booking = await _bookingService.GetBookingWithId(bookingId);
+        List<BookingDetailResponse> response = new List<BookingDetailResponse>();
+        for(int i = 0; i < bookingDetails.Count; i++)
+        {
+            var slots = await _slotService.GetAllSlotsByBookingDetail(bookingDetails[i].Id);
+            if (slots.Any())
+            {
+                response.Add(new BookingDetailResponse()
+                {
+                    BookingId = bookingId,
+                    Date = DateTime.Now,
+                    Price = booking.Price,
+                    Slots = _mapper.Map<List<SlotResponse>>(slots)
+                });
+            }
+            else
+            {
+                response.Add(new BookingDetailResponse()
+                {
+                    BookingId = bookingId,
+                    Date = DateTime.Now,
+                    Price = booking.Price,
+                    Slots = new List<SlotResponse>()
+                });
+            }
+        }
+        if (bookingDetails.Any())
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Get booking details based on booking id successful!",
+                Data = response
+            });
+        }
+
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "No record found!",
+            Data = null
+        });
+    }
+
+    [HttpGet("get-booking-before-now")]
+    [Authorize]
+    public async Task<IActionResult> GetBookingsBeforeNow()
+    {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        int userId = Int32.Parse(identity.FindFirst("UserId").Value);
+        var bookings = await _bookingService.GetAllBookingsBeforeNow(userId);
+        if (bookings.Any())
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Get bookings before now successful!",
+                Data = bookings
+            });
+        }
+
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "No record found!",
+            Data = null
+        });
+    }
+
+    [HttpGet("get-booking-after-now")]
+    public async Task<IActionResult> GetAllBookingsAfterNow()
+    {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        int userId = Int32.Parse(identity.FindFirst("UserId").Value);
+        var bookings = await _bookingService.GetAllBookingAfterNow(userId);
+        if (bookings.Any())
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200,
+                Message = "Get all bookings successful!",
+                Data = bookings
+            });
+        }
+
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "No record found!",
+            Data = null
+        });
     }
 
 }

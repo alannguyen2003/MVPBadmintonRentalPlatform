@@ -32,4 +32,24 @@ public class BookingService : IBookingService
     {
         return await _bookingRepository.GetBookingWithId(bookingId);
     }
+
+    public async Task CancelBooking(Booking booking)
+    {
+        await _bookingRepository.UpdateBooking(booking);
+    }
+
+    public async Task<List<BookingDetail>> GetBookingDetails(int bookingId)
+    {
+        return await _bookingRepository.GetBookingDetails(bookingId);
+    }
+
+    public async Task<List<Booking>> GetAllBookingsBeforeNow(int userId)
+    {
+        return await _bookingRepository.GetAllBookingsBeforeNow(userId);
+    }
+
+    public async Task<List<Booking>> GetAllBookingAfterNow(int userId)
+    {
+        return await _bookingRepository.GetAllBookingAfterNow(userId);
+    }
 }

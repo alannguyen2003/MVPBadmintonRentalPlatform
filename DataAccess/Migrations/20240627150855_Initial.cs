@@ -194,7 +194,8 @@ namespace DataAccess.Migrations
                     Price = table.Column<int>(type: "int", nullable: false),
                     BadmintonCourtId = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<int>(type: "int", nullable: false),
-                    BookingStatusId = table.Column<int>(type: "int", nullable: false)
+                    BookingStatusId = table.Column<int>(type: "int", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

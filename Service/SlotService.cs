@@ -42,4 +42,9 @@ public class SlotService : ISlotService
     {
         return await _slotRepository.GetSlotsWithDate(date);
     }
+
+    public async Task<List<Slot>> GetAllSlotsByBookingDetail(int bookingDetailId)
+    {
+        return await _slotRepository.GetSlotByBookingDetails(bookingDetailId);
+    }
 }

@@ -79,4 +79,19 @@ public class UserController : ControllerBase
             });
         }
     }
+
+    [HttpGet("get-number-of-player-and-owner")]
+    public async Task<IActionResult> GetNumberOfPlayerAndOwner()
+    {
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "Get number of player and owner successful!",
+            Data = new NumberOfPlayerAndOwner()
+            {
+                NumberOfOwner = await _accountService.GetNumberOfOwner(),
+                NumberOfPlayer = await _accountService.GetNumberOfPlayer()
+            }
+        });
+    }
 }

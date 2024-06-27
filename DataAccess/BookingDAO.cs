@@ -49,4 +49,24 @@ public class BookingDAO
         return await _context.Bookings
             .FindAsync(bookingId);
     }
+
+    public async Task UpdateBooking(Booking booking)
+    {
+        _context.Attach(booking).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<Booking>> GetAllBookingBeforeNow(int userId)
+    {
+        return await _context.Bookings
+            .Where(booking => booking.DateTime < DateTime.Now && booking.AccountId == userId)
+            .ToListAsync();
+    }
+
+    public async Task<List<Booking>> GetAllBookingAfterNow(int userId)
+    {
+        return await _context.Bookings
+            .Where(booking => booking.DateTime > DateTime.Now && booking.AccountId == userId && booking.BookingStatusId != 4)
+            .ToListAsync();
+    }
 }

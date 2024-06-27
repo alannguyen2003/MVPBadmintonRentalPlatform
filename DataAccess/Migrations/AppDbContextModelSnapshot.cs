@@ -174,6 +174,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("BookingStatusId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 

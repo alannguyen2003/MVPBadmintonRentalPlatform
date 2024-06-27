@@ -55,4 +55,14 @@ public class AccountRepository : IAccountRepository
         accountResponse.PhoneNumber = account.PhoneNumber;
         await AccountDAO.Instance.EditProfile(accountResponse);
     }
+
+    public async Task<int> GetNumberOfPlayer()
+    {
+        return await AccountDAO.Instance.GetNumberOfPlayer();
+    }
+
+    public async Task<int> GetNumberOfOwner()
+    {
+        return await AccountDAO.Instance.GetNumberOfOwner();
+    }
 }

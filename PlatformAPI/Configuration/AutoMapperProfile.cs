@@ -73,4 +73,10 @@ public class AutoMapperProfile : Profile
         CreateMap<TransactionRequest, Transaction>()
             .ReverseMap();
     }
+
+    private void BookingDetailEntityMap()
+    {
+        CreateMap<BookingDetail, BookingDetailResponse>()
+            .ReverseMap();
+    }
 }
