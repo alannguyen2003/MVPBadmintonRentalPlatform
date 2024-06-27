@@ -11,13 +11,20 @@ public class Utilization
     private readonly IBadmintonCourtService _badmintonCourtService;
     private readonly ICourtService _courtService;
     private readonly ISlotService _slotService;
+    private readonly IBookingDetailService _bookingDetailService;
+    private readonly IAccountService _accountService;
+    private readonly IBookingService _bookingService;
 
     public Utilization(IBadmintonCourtService badmintonCourtService, ICourtService courtService,
-        ISlotService slotService)
+        ISlotService slotService, IBookingDetailService bookingDetailService, 
+        IAccountService accountService, IBookingService bookingService)
     {
         _badmintonCourtService = badmintonCourtService;
         _courtService = courtService;
         _slotService = slotService;
+        _accountService = accountService;
+        _bookingDetailService = bookingDetailService;
+        _bookingService = bookingService;
     }
     public async Task<List<GenerateSlotResponse>> GenerateSlotResponseForBadmintonCourt(int badmintonCourtId, DateTime date)
     {
@@ -122,6 +129,124 @@ public class Utilization
             else
             {
                 slot.SlotWithStatusResponses.Add(new SlotWithStatusResponse()
+                {
+                    TimeFrame = timeFrame,
+                    IsBooked = false
+                });
+            }
+        }
+        return slot;
+    }
+    
+    public async Task<List<GenerateSlotResponse>> GenerateSlotResponseForBadmintonCourtForOwner(int badmintonCourtId, DateTime date)
+    {
+        var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(badmintonCourtId);
+        var courts = await _courtService.GetAllCourtsWithBadmintonCourt(badmintonCourtId);
+        var listSlot = new List<GenerateSlotResponse>();
+        for (int i = 0; i < courts.Count; i++)
+        {
+            var slot = new GenerateSlotResponse()
+            {
+                Id = courts[i].Id,
+                CourtCode = courts[i].CourtCode,
+                SlotWithStatusResponses = new List<SlotWithStatusResponse>()
+            };
+            List<int> hours = new List<int>();
+            List<int> minutes = new List<int>();
+            SlotDAO.Instance.GenerateTimeSlots(new TimeSpan(badmintonCourt.HourStart, badmintonCourt.MinuteStart, 0),
+                new TimeSpan(badmintonCourt.HourEnd, badmintonCourt.MinuteEnd, 0),
+                new TimeSpan(0, 30, 0),
+                out hours, out minutes);
+            var slots = await _slotService.GetSlotByDate(date);
+            if (!slots.Any()) slots = new List<Slot>();
+            for (int j = 0; j < hours.Count - 1; j++)
+            {
+                var minuteStart = minutes[j] == 0 ? "00" : "" + minutes[j];
+                var minuteEnd = minutes[j+1] == 0 ? "00" : "" + minutes[j+1];
+                string timeFrame = hours[j] + ":" + minuteStart + " - " +
+                                   hours[j + 1] + ":" + minuteEnd;
+                bool isBooked = false;
+                for (int k = 0; k < slots.Count; k++)
+                {
+                    if (timeFrame.Equals(slots[k].TimeFrame) && slots[k].CourtId == courts[i].Id)
+                    {
+                        isBooked = true;
+                        break;
+                    }
+                }
+                if (isBooked)
+                {
+                    slot.SlotWithStatusResponses.Add(new SlotWithStatusResponse()
+                    {
+                        TimeFrame = timeFrame,
+                        IsBooked = true
+                    });
+                }
+                else
+                {
+                    slot.SlotWithStatusResponses.Add(new SlotWithStatusResponse()
+                    {
+                        TimeFrame = timeFrame,
+                        IsBooked = false
+                    });
+                }
+            }
+            listSlot.Add(slot);
+        }
+        return listSlot;
+    }
+    
+    public async Task<GenerateSlotResponseForOwner> GenerateSlotForBadmintonCourtWithCourtForOwner(int badmintonCourtId, int courtId, DateTime date)
+    {
+        var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(badmintonCourtId);
+        var court = await _courtService.GetCourt(courtId);  
+        var slots = await _slotService.GetSlotByDate(date);
+        var slot = new GenerateSlotResponseForOwner()
+        {
+            Id = court!.Id,
+            CourtCode = court.CourtCode,
+            SlotWithStatusResponsesForOwner = new List<SlotWithStatusResponseForOwner>()
+        };
+        List<int> hours = new List<int>();
+        List<int> minutes = new List<int>();
+        SlotDAO.Instance.GenerateTimeSlots(new TimeSpan(badmintonCourt.HourStart, badmintonCourt.MinuteStart, 0),
+            new TimeSpan(badmintonCourt.HourEnd, badmintonCourt.MinuteEnd, 0),
+            new TimeSpan(0, 30, 0),
+            out hours, out minutes);
+        var slotsBooked = await _slotService.GetSlotByDate(date);
+        int bookingDetailId = 0;
+        for (int i = 0; i < hours.Count - 1; i++)
+        {
+            var minuteStart = minutes[i] == 0 ? "00" : "" + minutes[i];
+            var minuteEnd = minutes[i+1] == 0 ? "00" : "" + minutes[i+1];
+            string timeFrame = hours[i] + ":" + minuteStart + " - " +
+                               hours[i + 1] + ":" + minuteEnd;
+            bool isBooked = false;
+            for (int j = 0; j < slotsBooked.Count; j++)
+            {
+                if (slotsBooked[j].TimeFrame.Equals(timeFrame) && slotsBooked[j].CourtId == court.Id) 
+                {
+                    isBooked = true;
+                    bookingDetailId = slotsBooked[j].BookingDetailId;
+                    break;
+                }
+            }
+            var bookingDetail = await _bookingDetailService.GetBookingDetailById(bookingDetailId);
+            var booking = await _bookingService.GetBookingWithId(bookingDetail.BookingId);
+            var account = await _accountService.GetAccount(booking.AccountId);
+            if (isBooked)
+            {
+                slot.SlotWithStatusResponsesForOwner.Add(new SlotWithStatusResponseForOwner()
+                {
+                    TimeFrame = timeFrame,
+                    IsBooked = true,
+                    UserBooked = account.FullName,
+                    PhoneNumber = account.PhoneNumber
+                });
+            }
+            else
+            {
+                slot.SlotWithStatusResponsesForOwner.Add(new SlotWithStatusResponseForOwner()
                 {
                     TimeFrame = timeFrame,
                     IsBooked = false

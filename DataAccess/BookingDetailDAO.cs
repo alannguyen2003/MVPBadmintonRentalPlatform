@@ -49,4 +49,10 @@ public class BookingDetailDAO
         await _context.BookingSlots.AddRangeAsync(bookingDetails);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<BookingDetail?> GetBookingDetailById(int bookingDetailId)
+    {
+        return await _context.BookingSlots
+            .FindAsync(bookingDetailId);
+    }
 }

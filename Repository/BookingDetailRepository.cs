@@ -25,4 +25,9 @@ public class BookingDetailRepository : IBookingDetailRepository
     {
         await BookingDetailDAO.Instance.AddRangeBookingDetails(bookingDetails);
     }
+
+    public async Task<BookingDetail?> GetBookingDetailById(int bookingDetailId)
+    {
+        return await BookingDetailDAO.Instance.GetBookingDetailById(bookingDetailId);
+    }
 }

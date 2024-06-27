@@ -32,4 +32,9 @@ public class BookingDetailService : IBookingDetailService
     {
         await _bookingDetailRepository.AddRangeBookingDetails(bookingDetails);
     }
+
+    public async Task<BookingDetail?> GetBookingDetailById(int bookingDetailId)
+    {
+        return await _bookingDetailRepository.GetBookingDetailById(bookingDetailId);
+    }
 }

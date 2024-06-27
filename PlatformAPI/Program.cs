@@ -33,7 +33,7 @@ app.UseCors(options =>
     options.AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
-            .WithOrigins("http://localhost:3000", "http://localhost:8081"));
+            .WithOrigins("http://localhost:3000", "http://localhost:8081", "http://admin.smashit.com.vn"));
 
 app.MapControllers();
 
