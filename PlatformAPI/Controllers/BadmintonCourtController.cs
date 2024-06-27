@@ -236,4 +236,40 @@ public class BadmintonCourtController : ControllerBase
             }
         });
     }
+    
+    [HttpGet("generate-slot-by-date-for-owner")]
+    public async Task<IActionResult> GenerateSlotByDateForOwner(int badmintonCourtId, DateTime date)
+    {
+        var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(badmintonCourtId);
+        var listCourt = new List<GenerateSlotResponse>();
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "Generate slot successful!",
+            Data = new BadmintonCourtSlotReponse()
+            {
+                CourtId = badmintonCourtId,
+                CourtName = badmintonCourt.CourtName,
+                GenerateSlotResponses = await _utilization.GenerateSlotResponseForBadmintonCourt(badmintonCourtId, date)
+            }
+        });
+    }
+    
+    [HttpGet("generate-slot-by-date-and-court-for-owner")]
+    public async Task<IActionResult> GenerateSlotByDateAndCourtForOwner(int badmintonCourtId, int courtId, DateTime date)
+    {
+        var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(badmintonCourtId);
+        var listCourt = new List<GenerateSlotResponse>();
+        return Ok(new ApiResponse()
+        {
+            StatusCode = 200,
+            Message = "Generate slot successful!",
+            Data = new SlotOfCourtResponse()
+            {
+                CourtId = badmintonCourtId,
+                CourtName = badmintonCourt.CourtName,
+                GenerateSlotResponse = await _utilization.GenerateSlotForBadmintonCourtWithCourt(badmintonCourtId, courtId, date)
+            }
+        });
+    }
 }

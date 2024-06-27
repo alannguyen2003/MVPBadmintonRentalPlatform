@@ -49,7 +49,7 @@ public class Utilization
                 bool isBooked = false;
                 for (int k = 0; k < slots.Count; k++)
                 {
-                    if (timeFrame.Equals(slots[k].TimeFrame))
+                    if (timeFrame.Equals(slots[k].TimeFrame) && slots[k].CourtId == courts[i].Id)
                     {
                         isBooked = true;
                         break;
@@ -105,7 +105,7 @@ public class Utilization
             bool isBooked = false;
             for (int j = 0; j < slotsBooked.Count; j++)
             {
-                if (slotsBooked[j].TimeFrame.Equals(timeFrame))
+                if (slotsBooked[j].TimeFrame.Equals(timeFrame) && slotsBooked[j].CourtId == court.Id) 
                 {
                     isBooked = true;
                     break;
