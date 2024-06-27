@@ -125,6 +125,7 @@ public class TransactionController : ControllerBase
             var transaction = _mapper.Map<Transaction>(request);
             transaction.AccountId = Int32.Parse(userId);
             transaction.TransactionStatusId = 1;
+            transaction.Timestamp = DateTime.Now;
             await _transactionService.AddNewTransaction(transaction);
             return Ok(new ApiResponse()
             {
@@ -254,7 +255,8 @@ public class TransactionController : ControllerBase
                 AccountId = Int32.Parse(userId),
                 TransactionTypeId = 2,
                 TransactionStatusId = 1,
-                Amount = money
+                Amount = money,
+                Timestamp = DateTime.Now
             };
             await _transactionService.AddNewTransaction(transaction);
             return Ok(new ApiResponse()

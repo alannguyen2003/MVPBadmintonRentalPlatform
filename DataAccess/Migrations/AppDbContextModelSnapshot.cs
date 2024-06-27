@@ -355,6 +355,9 @@ namespace DataAccess.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("TransactionStatusId")
                         .HasColumnType("int");
 

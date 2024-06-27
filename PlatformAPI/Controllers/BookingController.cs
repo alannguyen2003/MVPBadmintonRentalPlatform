@@ -82,7 +82,8 @@ public class BookingController : ControllerBase
                 AccountId = Int32.Parse(userId),
                 TransactionStatusId = 2,
                 TransactionTypeId = 3,
-                Amount = booking.Price
+                Amount = booking.Price,
+                Timestamp = DateTime.Now
             });
             List<Slot> slots = new List<Slot>();
             foreach (var item in request.CreateBookingSlotRequests)

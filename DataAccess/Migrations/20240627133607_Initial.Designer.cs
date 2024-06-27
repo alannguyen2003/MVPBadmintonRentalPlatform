@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240622132658_Initial")]
+    [Migration("20240627133607_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -357,6 +357,9 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TransactionStatusId")
                         .HasColumnType("int");

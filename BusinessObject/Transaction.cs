@@ -18,4 +18,5 @@ public class Transaction : BaseEntity
     [ForeignKey("TransactionStatusId")]
     public int TransactionStatusId { get; set; }
     public virtual TransactionStatus TransactionStatus { get; set; }
+    public DateTime Timestamp { get; set; }
 }

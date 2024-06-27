@@ -159,7 +159,8 @@ namespace DataAccess.Migrations
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     TransactionTypeId = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
-                    TransactionStatusId = table.Column<int>(type: "int", nullable: false)
+                    TransactionStatusId = table.Column<int>(type: "int", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
