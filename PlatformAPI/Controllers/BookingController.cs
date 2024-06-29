@@ -20,10 +20,11 @@ public class BookingController : ControllerBase
     private readonly IMapper _mapper;
     private readonly ISlotService _slotService;
     private readonly IBookingDetailService _bookingDetailService;
+    private readonly IBadmintonCourtService _badmintonCourtService;
 
     public BookingController(IBookingService bookingService, IAccountService accountService,
         IMapper mapper, ITransactionService transactionService, ISlotService slotService,
-        IBookingDetailService bookingDetailService)
+        IBookingDetailService bookingDetailService, IBadmintonCourtService badmintonCourtService)
     {
         _bookingService = bookingService;
         _accountService = accountService;
@@ -31,6 +32,7 @@ public class BookingController : ControllerBase
         _transactionService = transactionService;
         _slotService = slotService;
         _bookingDetailService = bookingDetailService;
+        _badmintonCourtService = badmintonCourtService;
     }
 
     [HttpGet("get-all-bookings")]
@@ -206,11 +208,17 @@ public class BookingController : ControllerBase
         }
         if (bookingDetails.Any())
         {
+            var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(booking.BadmintonCourtId);
             return Ok(new ApiResponse()
             {
                 StatusCode = 200,
                 Message = "Get booking details based on booking id successful!",
-                Data = response
+                Data = new
+                {
+                    BadmintonCourtName = badmintonCourt.CourtName,
+                    CourtId = badmintonCourt.Id,
+                    Response = response
+                }
             });
         }
 
