@@ -86,7 +86,6 @@ public class BookingController : ControllerBase
                 Amount = booking.Price,
                 Timestamp = DateTime.Now
             });
-            List<Slot> slots = new List<Slot>();
             foreach (var item in request.CreateBookingSlotRequests)
             {
                 var bookingDetail = await _bookingDetailService.AddNewBookingDetails(new BookingDetail()
@@ -94,6 +93,7 @@ public class BookingController : ControllerBase
                     CourtId = item.CourtId,
                     BookingId = booking.Id
                 });
+                List<Slot> slots = new List<Slot>();
                 foreach (var slot in item.TimeFrames)
                 {
                     slots.Add(new Slot()
@@ -120,7 +120,7 @@ public class BookingController : ControllerBase
             return Ok(new ApiResponse()
             {
                 StatusCode = 400,
-                Message = "error" + ex.Message
+                Message = "error" + ex.InnerException
             });
         }
     }
