@@ -21,10 +21,11 @@ public class BookingController : ControllerBase
     private readonly ISlotService _slotService;
     private readonly IBookingDetailService _bookingDetailService;
     private readonly IBadmintonCourtService _badmintonCourtService;
-
+    private readonly IBookingStatusService _bookingStatusService;
     public BookingController(IBookingService bookingService, IAccountService accountService,
         IMapper mapper, ITransactionService transactionService, ISlotService slotService,
-        IBookingDetailService bookingDetailService, IBadmintonCourtService badmintonCourtService)
+        IBookingDetailService bookingDetailService, IBadmintonCourtService badmintonCourtService,
+        IBookingStatusService bookingStatusService)
     {
         _bookingService = bookingService;
         _accountService = accountService;
@@ -33,6 +34,7 @@ public class BookingController : ControllerBase
         _slotService = slotService;
         _bookingDetailService = bookingDetailService;
         _badmintonCourtService = badmintonCourtService;
+        _bookingStatusService = bookingStatusService;
     }
 
     [HttpGet("get-all-bookings")]
@@ -134,13 +136,30 @@ public class BookingController : ControllerBase
         var identity = HttpContext.User.Identity as ClaimsIdentity;
         int userId = Int32.Parse(identity.FindFirst("UserId").Value);
         var bookings = await _bookingService.GetBookingsWithPlayerId(userId);
+        var bookingResponses = new List<BookingUserResponse>();
+        foreach (var booking in bookings)
+        {
+            var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(booking.BadmintonCourtId);
+            var account = await _accountService.GetAccount(booking.AccountId);
+            var status = await _bookingStatusService.GetBookingStatus(booking.BookingStatusId);
+            BookingUserResponse bookingUserResponse = new BookingUserResponse()
+            {
+                Id = booking.Id,
+                Price = booking.Price,
+                UserName = account.FullName,
+                BadmintonCourtName = badmintonCourt.CourtName,
+                Status = status.Status,
+                DateTime = booking.DateTime
+            };
+            bookingResponses.Add(bookingUserResponse);
+        }
         if (bookings.Any())
         {
             return Ok(new ApiResponse()
             {
                 StatusCode = 200,
                 Message = "Get bookings by player's id successful!",
-                Data = bookings
+                Data = bookingResponses
             });
         }
 
@@ -191,7 +210,6 @@ public class BookingController : ControllerBase
                 {
                     BookingId = bookingId,
                     Date = DateTime.Now,
-                    Price = booking.Price,
                     Slots = _mapper.Map<List<SlotResponse>>(slots)
                 });
             }
@@ -201,7 +219,6 @@ public class BookingController : ControllerBase
                 {
                     BookingId = bookingId,
                     Date = DateTime.Now,
-                    Price = booking.Price,
                     Slots = new List<SlotResponse>()
                 });
             }
@@ -237,13 +254,30 @@ public class BookingController : ControllerBase
         var identity = HttpContext.User.Identity as ClaimsIdentity;
         int userId = Int32.Parse(identity.FindFirst("UserId").Value);
         var bookings = await _bookingService.GetAllBookingsBeforeNow(userId);
+        var bookingResponses = new List<BookingUserResponse>();
+        foreach (var booking in bookings)
+        {
+            var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(booking.BadmintonCourtId);
+            var account = await _accountService.GetAccount(booking.AccountId);
+            var status = await _bookingStatusService.GetBookingStatus(booking.BookingStatusId);
+            BookingUserResponse bookingUserResponse = new BookingUserResponse()
+            {
+                Id = booking.Id,
+                Price = booking.Price,
+                UserName = account.FullName,
+                BadmintonCourtName = badmintonCourt.CourtName,
+                Status = status.Status,
+                DateTime = booking.DateTime
+            };
+            bookingResponses.Add(bookingUserResponse);
+        }
         if (bookings.Any())
         {
             return Ok(new ApiResponse()
             {
                 StatusCode = 200,
                 Message = "Get bookings before now successful!",
-                Data = bookings
+                Data = bookingResponses
             });
         }
 
@@ -261,13 +295,30 @@ public class BookingController : ControllerBase
         var identity = HttpContext.User.Identity as ClaimsIdentity;
         int userId = Int32.Parse(identity.FindFirst("UserId").Value);
         var bookings = await _bookingService.GetAllBookingAfterNow(userId);
+        var bookingResponses = new List<BookingUserResponse>();
+        foreach (var booking in bookings)
+        {
+            var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(booking.BadmintonCourtId);
+            var account = await _accountService.GetAccount(booking.AccountId);
+            var status = await _bookingStatusService.GetBookingStatus(booking.BookingStatusId);
+            BookingUserResponse bookingUserResponse = new BookingUserResponse()
+            {
+                Id = booking.Id,
+                Price = booking.Price,
+                UserName = account.FullName,
+                BadmintonCourtName = badmintonCourt.CourtName,
+                Status = status.Status,
+                DateTime = booking.DateTime
+            };
+            bookingResponses.Add(bookingUserResponse);
+        }
         if (bookings.Any())
         {
             return Ok(new ApiResponse()
             {
                 StatusCode = 200,
                 Message = "Get all bookings successful!",
-                Data = bookings
+                Data = bookingResponses
             });
         }
 

@@ -8,4 +8,5 @@ public interface IBookingStatusService
 
     public Task AddNewBookingStatus(BookingStatus bookingStatus);
     public Task AddRangeBookingStatus(List<BookingStatus> bookingStatusList);
+    public Task<BookingStatus?> GetBookingStatus(int bookingStatusId);
 }

@@ -27,4 +27,9 @@ public class BookingStatusService : IBookingStatusService
     {
         await _bookingStatusRepository.AddRangeBookingStatus(bookingStatusList);
     }
+
+    public async Task<BookingStatus?> GetBookingStatus(int bookingStatusId)
+    {
+        return await _bookingStatusRepository.GetBookingStatus(bookingStatusId);
+    }
 }

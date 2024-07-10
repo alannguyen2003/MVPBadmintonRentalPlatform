@@ -20,4 +20,9 @@ public class BookingStatusRepository : IBookingStatusRepository
     {
         await BookingStatusDAO.Instance.AddRangeBookingStatus(bookingStatusList);
     }
+
+    public async Task<BookingStatus?> GetBookingStatus(int bookingStatusId)
+    {
+        return await BookingStatusDAO.Instance.GetBookingStatus(bookingStatusId);
+    }
 }

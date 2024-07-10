@@ -41,4 +41,10 @@ public class BookingStatusDAO
         await _context.BookingStatuses.AddRangeAsync(bookingStatusList);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<BookingStatus?> GetBookingStatus(int bookingStatusId)
+    {
+        return await _context.BookingStatuses
+            .FindAsync(bookingStatusId);
+    }
 }

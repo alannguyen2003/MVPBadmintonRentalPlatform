@@ -33,7 +33,8 @@ app.UseCors(options =>
     options.AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
-            .WithOrigins("http://localhost:3000", "http://localhost:8081", "http://admin.smashit.com.vn"));
+            .WithOrigins("http://localhost:3000", "http://localhost:8081", "http://admin.smashit.com.vn",
+                "https://smash-it-web.vercel.app"));
 
 app.MapControllers();
 
