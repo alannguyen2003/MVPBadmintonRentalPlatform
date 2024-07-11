@@ -148,6 +148,8 @@ public class BookingController : ControllerBase
                 Price = booking.Price,
                 UserName = account.FullName,
                 BadmintonCourtName = badmintonCourt.CourtName,
+                NumberOfCourt = badmintonCourt.NumberOfCourt,
+                BadmintonCourtLocation = badmintonCourt.Address,
                 Status = status.Status,
                 DateTime = booking.DateTime
             };
@@ -266,6 +268,8 @@ public class BookingController : ControllerBase
                 Price = booking.Price,
                 UserName = account.FullName,
                 BadmintonCourtName = badmintonCourt.CourtName,
+                NumberOfCourt = badmintonCourt.NumberOfCourt,
+                BadmintonCourtLocation = badmintonCourt.Address,
                 Status = status.Status,
                 DateTime = booking.DateTime
             };
@@ -307,8 +311,10 @@ public class BookingController : ControllerBase
                 Price = booking.Price,
                 UserName = account.FullName,
                 BadmintonCourtName = badmintonCourt.CourtName,
+                NumberOfCourt = badmintonCourt.NumberOfCourt,
+                BadmintonCourtLocation = badmintonCourt.Address,
                 Status = status.Status,
-                DateTime = booking.DateTime
+                DateTime = booking.DateTime 
             };
             bookingResponses.Add(bookingUserResponse);
         }

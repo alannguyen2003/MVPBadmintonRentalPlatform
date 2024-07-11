@@ -66,7 +66,7 @@ public class BookingDAO
     public async Task<List<Booking>> GetAllBookingAfterNow(int userId)
     {
         return await _context.Bookings
-            .Where(booking => booking.DateTime > DateTime.Now && booking.AccountId == userId && booking.BookingStatusId != 4)
+            .Where(booking => booking.DateTime > DateTime.Now && booking.AccountId == userId)
             .ToListAsync();
     }
 
