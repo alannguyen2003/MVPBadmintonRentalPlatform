@@ -16,7 +16,9 @@ public class AutoMapperProfile : Profile
         SlotBadmintonCourtEntityMap();
         BookingBadmintonCourtEntityMap();
         TransactionEntityMap();
+        ExpenditureEntityMap();
     }
+    
 
     private void AuthenticationEntityMap()
     {
@@ -77,6 +79,12 @@ public class AutoMapperProfile : Profile
     private void BookingDetailEntityMap()
     {
         CreateMap<BookingDetail, BookingDetailResponse>()
+            .ReverseMap();
+    }
+
+    private void ExpenditureEntityMap()
+    {
+        CreateMap<ExpenditureRequest, Transaction>()
             .ReverseMap();
     }
 }

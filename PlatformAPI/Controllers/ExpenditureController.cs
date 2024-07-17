@@ -72,7 +72,7 @@ public class ExpenditureController : ControllerBase
             return Ok(new ApiResponse()
             {
                 StatusCode = 400,
-                Message = "Error in create new expenditure record: " + ex.InnerException
+                Message = "Error in create new expenditure record: " + ex.Message
             });
         }
     }
