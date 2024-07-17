@@ -61,4 +61,9 @@ public class TransactionService : ITransactionService
     {
         await _transactionRepository.AddNewExpenditureRecord(transaction);
     }
+
+    public async Task CancelRequestTransaction(Transaction transaction)
+    {
+        await _transactionRepository.CancelRequestTransaction(transaction);
+    }
 }

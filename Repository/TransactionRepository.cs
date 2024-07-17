@@ -45,7 +45,14 @@ public class TransactionRepository : ITransactionRepository
     {
         transaction.TransactionStatusId = 2;
         var account = await AccountDAO.Instance.GetAccount(transaction.AccountId);
-        account.Balance += transaction.Amount;
+        if (transaction.TransactionTypeId == 1)
+        {
+            account.Balance += transaction.Amount;
+        }
+        else if (transaction.TransactionTypeId == 2)
+        {
+            account.Balance -= transaction.Amount;
+        }
         await AccountDAO.Instance.EditProfile(account);
         await TransactionDAO.Instance.UpdateTransaction(transaction);
     }
@@ -60,5 +67,11 @@ public class TransactionRepository : ITransactionRepository
     {
         transaction.TransactionStatusId = 2;
         await TransactionDAO.Instance.AddNewTransaction(transaction);
+    }
+
+    public async Task CancelRequestTransaction(Transaction transaction)
+    {
+        transaction.TransactionStatusId = 3;
+        await TransactionDAO.Instance.UpdateTransaction(transaction);
     }
 }

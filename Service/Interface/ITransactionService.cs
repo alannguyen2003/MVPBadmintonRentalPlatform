@@ -14,4 +14,5 @@ public interface ITransactionService
     public Task ApproveTransaction(Transaction transaction);
     public Task RejectTransaction(Transaction transaction);
     public Task AddNewExpenditureRecord(Transaction transaction);
+    public Task CancelRequestTransaction(Transaction transaction);
 }

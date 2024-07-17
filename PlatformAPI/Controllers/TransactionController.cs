@@ -7,6 +7,7 @@ using CloudinaryDotNet;
 using DataTransfer;
 using DataTransfer.Request;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -327,6 +328,33 @@ public class TransactionController : ControllerBase
             {
                 StatusCode = 400,
                 Message = "Error in create new transaction: " + ex.InnerException
+            });
+        }
+    }
+
+    [HttpPost("cancel-request")]
+    public async Task<IActionResult> CancelRequest(int transactionId)
+    {
+        try
+        {
+            var transaction = await _transactionService.GetTransaction(transactionId);
+            if (transaction != null)
+            {
+                await _transactionService.CancelRequestTransaction(transaction);
+                return Ok(new ApiResponse()
+                {
+                    StatusCode = 200,
+                    Message = "Cancel request successful!"
+                });
+            }
+            else throw new Exception();
+        }
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "Error in cancel request transaction: " + ex.InnerException
             });
         }
     }
