@@ -27,4 +27,9 @@ public class TransactionTypeService : ITransactionTypeService
     {
         await _transactionTypeRepository.AddRangeTransactionType(transactionTypes);
     }
+
+    public async Task<List<TransactionType>> GetAllExpenditureRecord()
+    {
+        return await _transactionTypeRepository.GetAllExpenditureType();
+    }
 }

@@ -93,6 +93,22 @@ public class Seeding
             new TransactionType()
             {
                 TypeOfTransaction = "Booking"
+            },
+            new TransactionType()
+            {
+                TypeOfTransaction = "San Cau"
+            },
+            new TransactionType()
+            {
+                TypeOfTransaction = "Quang cao"
+            },
+            new TransactionType()
+            {
+                TypeOfTransaction = "Giai dau"
+            },
+            new TransactionType()
+            {
+                TypeOfTransaction = "Dien nuoc"
             }
         };
         await _transactionTypeService.AddRangeTransactionType(transactionTypes);
@@ -139,6 +155,10 @@ public class Seeding
             new BookingStatus()
             {
                 Status = "Cancel"
+            },
+            new BookingStatus()
+            {
+                Status = "GotChanged"
             }
         };
         await _bookingStatusService.AddRangeBookingStatus(bookingStatus);

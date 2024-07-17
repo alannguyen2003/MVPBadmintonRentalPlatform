@@ -20,4 +20,9 @@ public class TransactionTypeRepository : ITransactionTypeRepository
     {
         await TransactionTypeDAO.Instance.AddRangeTransactionType(transactionTypes);
     }
+
+    public async Task<List<TransactionType>> GetAllExpenditureType()
+    {
+        return await TransactionTypeDAO.Instance.GetAllExpenditureRecord();
+    }
 }

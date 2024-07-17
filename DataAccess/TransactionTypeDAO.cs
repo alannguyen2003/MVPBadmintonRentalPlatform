@@ -41,4 +41,11 @@ public class TransactionTypeDAO
         await _context.TransactionTypes.AddRangeAsync(transactionTypes);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<TransactionType>> GetAllExpenditureRecord()
+    {
+        return await _context.TransactionTypes
+            .Where(item => item.Id != 1 && item.Id != 2 && item.Id != 3)
+            .ToListAsync();
+    }
 }

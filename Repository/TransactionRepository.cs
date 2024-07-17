@@ -55,4 +55,10 @@ public class TransactionRepository : ITransactionRepository
         transaction.TransactionStatusId = 3;
         await TransactionDAO.Instance.UpdateTransaction(transaction);
     }
+
+    public async Task AddNewExpenditureRecord(Transaction transaction)
+    {
+        transaction.TransactionStatusId = 2;
+        await TransactionDAO.Instance.AddNewTransaction(transaction);
+    }
 }

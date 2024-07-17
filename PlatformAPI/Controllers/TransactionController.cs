@@ -302,4 +302,32 @@ public class TransactionController : ControllerBase
         }
     }
 
+    [HttpPost("add-new-expenditure-record")]
+    [Authorize]
+    public async Task<IActionResult> AddNewExpenditureRecord(ExpenditureRequest request)
+    {
+        try
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userId = identity.FindFirst("UserId").Value;
+            var transaction = _mapper.Map<Transaction>(request);
+            transaction.AccountId = Int32.Parse(userId);
+            transaction.TransactionStatusId = 2;
+            transaction.Timestamp = request.DateTime;
+            await _transactionService.AddNewTransaction(transaction);
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 201,
+                Message = "Create new transaction successful!"
+            });
+        }
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "Error in create new transaction: " + ex.InnerException
+            });
+        }
+    }
 }
