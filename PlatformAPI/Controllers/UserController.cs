@@ -17,12 +17,17 @@ namespace PlatformAPI.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IAccountService _accountService;
+    private readonly IBookingService _bookingService;
+    private readonly IBadmintonCourtService _badmintonCourtService;
     private readonly IMapper _mapper;
 
-    public UserController(IAccountService accountService, IMapper mapper)
+    public UserController(IAccountService accountService, IMapper mapper, IBookingService bookingService,
+        IBadmintonCourtService badmintonCourtService)
     {
         _accountService = accountService;
         _mapper = mapper;
+        _bookingService = bookingService;
+        _badmintonCourtService = badmintonCourtService;
     }
 
     [HttpGet("get-profile")]
@@ -93,5 +98,28 @@ public class UserController : ControllerBase
                 NumberOfPlayer = await _accountService.GetNumberOfPlayer()
             }
         });
+    }
+
+    [HttpGet("load-balance")]
+    [Authorize]
+    public async Task<IActionResult> LoadBalanceForCourtOwner()
+    {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        var userId = Int32.Parse(identity.FindFirst("UserId").Value);
+        var user = await _accountService.GetAccount(userId);
+        var badmintonCourt = await _badmintonCourtService.GetBadmintonCourtWithOwnerId(userId);
+        var bookings = await _bookingService.GetAllBookingsOfBadmintonCourtBeforeNow(badmintonCourt.Id);
+        int balance = 0;
+        foreach (var item in bookings)
+        {
+            if (item.BookingStatusId == 2)
+            {
+                balance += (int)(item.Price * 0.15);
+                await _bookingService.UpdateBookingForCourtOwner(item);
+            }
+        }
+        user.Balance += balance;
+        await _accountService.EditProfileAsync(user);
+        return Ok();
     }
 }

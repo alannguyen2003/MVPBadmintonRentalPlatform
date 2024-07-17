@@ -52,6 +52,7 @@ public class BookingDAO
 
     public async Task UpdateBooking(Booking booking)
     {
+        _context.ChangeTracker.Clear();
         _context.Attach(booking).State = EntityState.Modified;
         await _context.SaveChangesAsync();
     }
@@ -77,5 +78,13 @@ public class BookingDAO
                               booking.DateTime.Date.Equals(date.Date) &&
                               booking.BookingStatusId == 2)
             .ToListAsync();
-    } 
+    }
+
+    public async Task<List<Booking>> GetAllBookingOfBadmintonCourtBeforeNow(int badmintonCourtId)
+    {
+        return await _context.Bookings
+            .Where(booking => booking.BadmintonCourtId == badmintonCourtId &&
+                              booking.DateTime < DateTime.Now)
+            .ToListAsync();
+    }
 }
