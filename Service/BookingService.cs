@@ -67,4 +67,9 @@ public class BookingService : IBookingService
     {
         await _bookingRepository.UpdateBookingForCourtOwner(booking);
     }
+
+    public async Task<List<Booking>> GetAllBookingOfBadmintonCourtByDate(int badmintonCourtId, DateTime date)
+    {
+        return await _bookingRepository.GetAllBookingOfBadmintonCourtByDate(badmintonCourtId, date);
+    }
 }

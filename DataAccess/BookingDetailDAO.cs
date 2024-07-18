@@ -55,4 +55,12 @@ public class BookingDetailDAO
         return await _context.BookingSlots
             .FindAsync(bookingDetailId);
     }
+
+    public async Task<List<Slot>> GetAllSlotByBookingDetails(int bookingDetailId)
+    {
+        return await _context.Slots
+            .Where(slot => slot.BookingDetailId == bookingDetailId)
+            .ToListAsync();
+    } 
+    
 }

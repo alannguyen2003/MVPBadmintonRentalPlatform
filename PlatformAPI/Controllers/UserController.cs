@@ -104,22 +104,39 @@ public class UserController : ControllerBase
     [Authorize]
     public async Task<IActionResult> LoadBalanceForCourtOwner()
     {
-        var identity = HttpContext.User.Identity as ClaimsIdentity;
-        var userId = Int32.Parse(identity.FindFirst("UserId").Value);
-        var user = await _accountService.GetAccount(userId);
-        var badmintonCourt = await _badmintonCourtService.GetBadmintonCourtWithOwnerId(userId);
-        var bookings = await _bookingService.GetAllBookingsOfBadmintonCourtBeforeNow(badmintonCourt.Id);
-        int balance = 0;
-        foreach (var item in bookings)
+        try
         {
-            if (item.BookingStatusId == 2)
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userId = Int32.Parse(identity.FindFirst("UserId").Value);
+            var user = await _accountService.GetAccount(userId);
+            var badmintonCourt = await _badmintonCourtService.GetBadmintonCourtWithOwnerId(userId);
+            var bookings = await _bookingService.GetAllBookingsOfBadmintonCourtBeforeNow(badmintonCourt.Id);
+            int balance = 0;
+            foreach (var item in bookings)
             {
-                balance += (int)(item.Price * 0.15);
-                await _bookingService.UpdateBookingForCourtOwner(item);
+                if (item.BookingStatusId == 2)
+                {
+                    balance += (int)(item.Price * 0.15);
+                    await _bookingService.UpdateBookingForCourtOwner(item);
+                }
             }
+
+            user.Balance += balance;
+            await _accountService.EditProfileAsync(user);
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 200, 
+                Message = "Load balance successful!"
+            });
         }
-        user.Balance += balance;
-        await _accountService.EditProfileAsync(user);
-        return Ok();
+        catch (Exception ex)
+        {
+            return Ok(new ApiResponse()
+            {
+                StatusCode = 400,
+                Message = "Error in load balance: " + ex.Message
+            });
+        }
+        
     }
 }

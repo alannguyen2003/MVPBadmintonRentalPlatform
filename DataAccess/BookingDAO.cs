@@ -75,8 +75,8 @@ public class BookingDAO
     {
         return await _context.Bookings
             .Where(booking => booking.BadmintonCourtId == badmintonCourtId &&
-                              booking.DateTime.Date.Equals(date.Date) &&
-                              booking.BookingStatusId == 2)
+                              booking.DateTime.Date == date.Date &&
+                              booking.BookingStatusId == 2 || booking.BookingStatusId == 5)
             .ToListAsync();
     }
 
@@ -85,6 +85,14 @@ public class BookingDAO
         return await _context.Bookings
             .Where(booking => booking.BadmintonCourtId == badmintonCourtId &&
                               booking.DateTime < DateTime.Now)
+            .ToListAsync();
+    }
+
+    public async Task<List<Booking>> GetAllBookingOfBadmintonCourtByDate(int badmintonCourtId, DateTime date)
+    {
+        return await _context.Bookings
+            .Where(booking => booking.BadmintonCourtId == badmintonCourtId &&
+                              booking.DateTime == date)
             .ToListAsync();
     }
 }

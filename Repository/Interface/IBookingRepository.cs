@@ -15,4 +15,6 @@ public interface IBookingRepository
     public Task<int> GetRevenueByDateAndBadmintonCourtId(int badmintonCourtId, DateTime date);
     public Task<List<Booking>> GetAllBookingsOfBadmintonCourtBeforeNow(int badmintonCourtId);
     public Task UpdateBookingForCourtOwner(Booking booking);
+    public Task<List<Slot>> GetAllSlotsOfBooking(int bookingId);
+    public Task<List<Booking>> GetAllBookingOfBadmintonCourtByDate(int badmintonCourtId, DateTime date);
 }

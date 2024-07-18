@@ -84,4 +84,20 @@ public class BookingRepository : IBookingRepository
         booking.BookingStatusId = 5;
         await BookingDAO.Instance.UpdateBooking(booking);
     }
+
+    public async Task<List<Slot>> GetAllSlotsOfBooking(int bookingId)
+    {
+        var bookingDetails = await BookingDetailDAO.Instance.GetAllBookingDetailsWithBookingId(bookingId);
+        var slotList = new List<Slot>();
+        foreach (var item in bookingDetails)
+        {
+            slotList.AddRange(await BookingDetailDAO.Instance.GetAllSlotByBookingDetails(item.Id));
+        }
+        return slotList;
+    }
+
+    public async Task<List<Booking>> GetAllBookingOfBadmintonCourtByDate(int badmintonCourtId, DateTime date)
+    {
+        return await BookingDAO.Instance.GetBookingsByDateAndBadmintonCourtId(badmintonCourtId, date);
+    }
 }

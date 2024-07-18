@@ -336,4 +336,12 @@ public class BookingController : ControllerBase
         });
     }
 
+    [HttpGet("get-all-booking-of-badminton-court-by-date")]
+    [Authorize]
+    public async Task<IActionResult> GetAllBookingOfBadmintonCourtByDate(DateTime date)
+    {
+        var slots = await _bookingService.GetAllBookingOfBadmintonCourtByDate(1, date);
+        return Ok(slots);
+    }
+
 }
