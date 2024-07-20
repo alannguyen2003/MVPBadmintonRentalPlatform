@@ -22,10 +22,11 @@ public class BookingController : ControllerBase
     private readonly IBookingDetailService _bookingDetailService;
     private readonly IBadmintonCourtService _badmintonCourtService;
     private readonly IBookingStatusService _bookingStatusService;
+    private readonly ICourtService _courtService;
     public BookingController(IBookingService bookingService, IAccountService accountService,
         IMapper mapper, ITransactionService transactionService, ISlotService slotService,
         IBookingDetailService bookingDetailService, IBadmintonCourtService badmintonCourtService,
-        IBookingStatusService bookingStatusService)
+        IBookingStatusService bookingStatusService, ICourtService courtService)
     {
         _bookingService = bookingService;
         _accountService = accountService;
@@ -35,6 +36,7 @@ public class BookingController : ControllerBase
         _bookingDetailService = bookingDetailService;
         _badmintonCourtService = badmintonCourtService;
         _bookingStatusService = bookingStatusService;
+        _courtService = courtService;
     }
 
     [HttpGet("get-all-bookings")]
@@ -142,13 +144,16 @@ public class BookingController : ControllerBase
             var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(booking.BadmintonCourtId);
             var account = await _accountService.GetAccount(booking.AccountId);
             var status = await _bookingStatusService.GetBookingStatus(booking.BookingStatusId);
+            var slots = await _bookingService.GetAllSlotOfBooking(booking.Id);
+            var courts = await _bookingDetailService.GetAllBookingDetailsWithBooking(booking.Id);
             BookingUserResponse bookingUserResponse = new BookingUserResponse()
             {
                 Id = booking.Id,
                 Price = booking.Price,
                 UserName = account.FullName,
                 BadmintonCourtName = badmintonCourt.CourtName,
-                NumberOfCourt = badmintonCourt.NumberOfCourt,
+                NumberOfCourt = courts.Count,
+                NumberOfSlots = slots.Count,
                 BadmintonCourtLocation = badmintonCourt.Address,
                 Status = status.Status,
                 DateTime = booking.DateTime
@@ -262,13 +267,16 @@ public class BookingController : ControllerBase
             var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(booking.BadmintonCourtId);
             var account = await _accountService.GetAccount(booking.AccountId);
             var status = await _bookingStatusService.GetBookingStatus(booking.BookingStatusId);
+            var slots = await _bookingService.GetAllSlotOfBooking(booking.Id);
+            var courts = await _bookingDetailService.GetAllBookingDetailsWithBooking(booking.Id);
             BookingUserResponse bookingUserResponse = new BookingUserResponse()
             {
                 Id = booking.Id,
                 Price = booking.Price,
                 UserName = account.FullName,
                 BadmintonCourtName = badmintonCourt.CourtName,
-                NumberOfCourt = badmintonCourt.NumberOfCourt,
+                NumberOfCourt = courts.Count,
+                NumberOfSlots = slots.Count,
                 BadmintonCourtLocation = badmintonCourt.Address,
                 Status = status.Status,
                 DateTime = booking.DateTime
@@ -305,13 +313,16 @@ public class BookingController : ControllerBase
             var badmintonCourt = await _badmintonCourtService.GetBadmintonCourt(booking.BadmintonCourtId);
             var account = await _accountService.GetAccount(booking.AccountId);
             var status = await _bookingStatusService.GetBookingStatus(booking.BookingStatusId);
+            var slots = await _bookingService.GetAllSlotOfBooking(booking.Id);
+            var courts = await _bookingDetailService.GetAllBookingDetailsWithBooking(booking.Id);
             BookingUserResponse bookingUserResponse = new BookingUserResponse()
             {
                 Id = booking.Id,
                 Price = booking.Price,
                 UserName = account.FullName,
                 BadmintonCourtName = badmintonCourt.CourtName,
-                NumberOfCourt = badmintonCourt.NumberOfCourt,
+                NumberOfCourt = courts.Count,
+                NumberOfSlots = slots.Count,
                 BadmintonCourtLocation = badmintonCourt.Address,
                 Status = status.Status,
                 DateTime = booking.DateTime 
@@ -340,8 +351,33 @@ public class BookingController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetAllBookingOfBadmintonCourtByDate(DateTime date)
     {
-        var slots = await _bookingService.GetAllBookingOfBadmintonCourtByDate(1, date);
-        return Ok(slots);
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        var userId = Int32.Parse(identity.FindFirst("UserId").Value);
+        var badmintonCourt = await  _badmintonCourtService.GetBadmintonCourtWithOwnerId(userId);
+        var bookings = await _bookingService.GetAllBookingOfBadmintonCourtByDate(1, date);
+        var slots = new List<Slot>();
+        foreach (var item in bookings)
+        {
+            slots.AddRange(await _bookingService.GetAllSlotOfBooking(item.Id));
+        }
+
+        /*var bookingByDateOfOwner = new BookingByDateOfOwner()
+        {
+            BadmintonCourtName = badmintonCourt.CourtName,
+            Date = date,
+            BookingDetailOwners = new List<BookingDetailOwner>()
+        };*/
+        var listBookingDetailOwner = new List<BookingDetailOwner>();
+        foreach (var item in bookings)
+        {
+            var account = await _accountService.GetAccount(item.AccountId);
+            var slotsOfBooking = await _bookingService.GetAllSlotOfBooking(item.Id);
+            foreach (var slot in slotsOfBooking)
+            {
+                
+            }
+        }
+        return Ok();
     }
 
 }
