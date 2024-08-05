@@ -540,10 +540,10 @@ public class Seeding
                 MinuteEnd = 0,
                 Address = "992 Đ. Nguyễn Duy Trinh, Phường Phú Hữu, Thủ Đức, Thành phố Hồ Chí Minh",
                 PriceAtWeekend = 110000,
-                PricePerHour = 100000,
-                PriceAtHoliday = 90000,
+                PricePerHour = 90000,
+                PriceAtHoliday = 110000,
                 ProfileImage = "",
-                AccountId = 1,
+                AccountId = 9,
                 NumberOfCourt = 9
             },
             new BadmintonCourt()
@@ -558,57 +558,24 @@ public class Seeding
                 PricePerHour = 80000,
                 PriceAtHoliday = 90000,
                 ProfileImage = "",
-                AccountId = 2,
-                NumberOfCourt = 9
+                AccountId = 8,
+                NumberOfCourt = 4
             },
             new BadmintonCourt()
             {
-                //Id = 1;
-                CourtName = "Khánh Linh",
-                HourStart = 4,
-                MinuteStart = 30,
-                HourEnd = 24,
-                MinuteEnd = 0,
-                Address = "15 Đ. số 28, Cát Lái, Quận 2, Thành phố Hồ Chí Minh",
-                PriceAtWeekend = 120000,
-                PricePerHour = 110000,
-                PriceAtHoliday = 90000,
-                ProfileImage = "", 
-                AccountId = 3,
-                NumberOfCourt = 9
-            },
-            new BadmintonCourt()
-            {
-                //Id = 1;
-                CourtName = "Quốc Tùng",
+                CourtName = "An Bình",
                 HourStart = 5,
-                MinuteStart = 0,
-                HourEnd = 22,
+                MinuteStart = 00,
+                HourEnd = 23,
                 MinuteEnd = 0,
-                Address = "408/8 Nguyễn Xiển, Long Thạnh Mỹ, Quận 9, Thành phố Hồ Chí Minh",
-                PriceAtWeekend = 80000,
-                PricePerHour = 70000,
+                Address = "240A Dương Đình Hội, Tăng Nhơn Phú B, Thủ Đức, Hồ Chí Minh",
+                PriceAtWeekend = 90000,
+                PricePerHour = 80000,
                 PriceAtHoliday = 90000,
                 ProfileImage = "",
-                AccountId = 4,
-                NumberOfCourt = 9
+                AccountId = 10, 
+                NumberOfCourt = 12
             },
-            new BadmintonCourt()
-            {
-                //Id = 1;
-                CourtName = "Mega Sea",
-                HourStart = 4,
-                MinuteStart = 0,
-                HourEnd = 22,
-                MinuteEnd = 0,
-                Address = "545 Nguyễn Xiển, Long Thạnh Mỹ, Quận 9, Thành phố Hồ Chí Minh",
-                PriceAtWeekend = 100000,
-                PricePerHour = 90000,
-                PriceAtHoliday = 90000,
-                ProfileImage = "",
-                AccountId = 5,
-                NumberOfCourt = 9
-            }
         };
         await _badmintonCourtService.AddRangeBadmintonCourt(badmintonCourts);
     }
@@ -657,7 +624,7 @@ public class Seeding
                 Bank = "",
                 CardNumber = "",
                 Balance = 1000000,
-                RoleId = 2
+                RoleId = 3
             },
             new Account()
             {
@@ -670,7 +637,7 @@ public class Seeding
                 Bank = "",
                 CardNumber = "",
                 Balance = 1000000,
-                RoleId = 2
+                RoleId = 3
             },
             new Account()
             {
@@ -683,7 +650,7 @@ public class Seeding
                 Bank = "",
                 CardNumber = "",
                 Balance = 1000000,
-                RoleId = 2
+                RoleId = 3
             },
             new Account()
             {
@@ -696,7 +663,7 @@ public class Seeding
                 Bank = "",
                 CardNumber = "",
                 Balance = 1000000,
-                RoleId = 2
+                RoleId = 3
             },
             new Account()
             {
@@ -722,7 +689,7 @@ public class Seeding
                 Bank = "",
                 CardNumber = "",
                 Balance = 1000000,
-                RoleId = 1
+                RoleId = 3
             },
             new Account()
             {
@@ -735,8 +702,47 @@ public class Seeding
                 Bank = "",
                 CardNumber = "",
                 Balance = 1000000,
+                RoleId = 3
+            },
+            new Account()
+            {
+                Email = "tranquocvung@gmail.com",
+                Password = "12345",
+                FullName = "Trần Quốc Vững",
+                PhoneNumber = "0765 264 603",
+                DateOfBirth = DateTime.Now,
+                Gender = "Male",
+                Bank = "",
+                CardNumber = "",
+                Balance = 0,
                 RoleId = 2
-            }
+            },
+            new Account()
+            {
+                Email = "taynguyenvutru@gmail.com",
+                Password = "12345",
+                FullName = "Nguyễn Văn Tây",
+                PhoneNumber = "0888 900 688",
+                DateOfBirth = DateTime.Now,
+                Gender = "Male",
+                Bank = "",
+                CardNumber = "",
+                Balance = 0,
+                RoleId = 2
+            },
+            new Account()
+            {
+                Email = "hungnguyen123@gmail.com",
+                Password = "12345",
+                FullName = "Nguyễn Văn Hùng",
+                PhoneNumber = "0961 256 499",
+                DateOfBirth = DateTime.Now,
+                Gender = "Male",
+                Bank = "",
+                CardNumber = "",
+                Balance = 0,
+                RoleId = 2
+            },
         };
         await _accountService.AddRangeAccountAsync(accounts);
     }
